@@ -1,7 +1,7 @@
 <template>
   <div class="lead" :class="type" :style="postion" @mouseover="showControls = true" @mouseout="showControls = false">
     <div class="header">
-      <img class="tack" src="../assets/tack.png" alt="tack">
+      <img v-if="type !== 'image'" class="tack" src="../assets/tack.png" alt="tack">
       <div class="move-me" :class="{ 'show': showControls }" @mousedown="dragMouseDown">
         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrows-move" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M6.5 8a.5.5 0 0 0-.5-.5H1.5a.5.5 0 0 0 0 1H6a.5.5 0 0 0 .5-.5z"/>
@@ -13,7 +13,8 @@
       </div>
     </div>
     <div v-if="type === 'note'" class="content">{{ content }}</div>
-    <img v-if="type === 'image'" class="img" :src="getImgUrl(content)" alt="">
+    <img v-if="type === 'person'" class="img" :src="getImgUrl(content)" alt="">
+    <img v-if="type === 'image'" class="img-for-real" :src="getImgUrl(content)" alt="">
     <div v-if="title" class="title">{{ title }}</div>
   </div>
 </template>
@@ -120,6 +121,12 @@ export default {
 }
 
 .image {
+  .img-for-real {
+    width: 900px;
+  }
+}
+
+.person {
   background-color: #f5f2d0;
   padding: 0px 10px 25px 15px;
   filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
@@ -168,6 +175,16 @@ export default {
   z-index: 300;
 }
 
+.pin {
+  width: 30px;
+  height: 30px;
+}
+
+.pin .tack {
+  top: 0px;
+  left: 0px;
+}
+
 .move-me {
   position: absolute;
   text-align: right;
@@ -179,6 +196,13 @@ export default {
   opacity: 0.25;
   visibility: hidden;
   right: 5px;
+  top: 5px;
+  z-index: 350;
+}
+
+.image .move-me {
+  top: 35px;
+  opacity: 1;
 }
 
 .move-me.show {

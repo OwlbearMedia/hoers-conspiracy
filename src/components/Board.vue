@@ -33,8 +33,8 @@ export default {
 
 <style scoped>
 .board {
-  width: calc(100vw - 10px);
-  height: calc(100vh - 10px);
+  width: 1670px;
+  height: 856px;
   position: relative;
   border: 5px solid #737e7a;
   background: url(../assets/board.jpg);

@@ -20,12 +20,14 @@ export default {
       return {
         top: this.$store.state.leads[this.pointA].top,
         left: this.$store.state.leads[this.pointA].left,
+        type: this.$store.state.leads[this.pointA].type,
       }
     },
     off2() {
       return {
         top: this.$store.state.leads[this.pointB].top,
         left: this.$store.state.leads[this.pointB].left,
+        type: this.$store.state.leads[this.pointB].type,
       }
     },
     getOffset(point) {
@@ -36,11 +38,13 @@ export default {
     },
     connect() {
       const thickness = 4;
+      const offset1 = this.off1.type === 'pin' ? 15 : 75;
+      const offset2 = this.off2.type === 'pin' ? 15 : 75;
       // bottom right
-      var x1 = this.off1.left + 75;
+      var x1 = this.off1.left + offset1;
       var y1 = this.off1.top + 10;
       // top right
-      var x2 = this.off2.left + 75;
+      var x2 = this.off2.left + offset2;
       var y2 = this.off2.top + 10;
       // distance
       var length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
