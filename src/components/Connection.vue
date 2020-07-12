@@ -68,7 +68,7 @@ export default {
   margin: 0;
   position: absolute;
   line-height: 1px;
-  background-color: red;
+  background-color: #bf0000;
   border-radius: 4px;
 
   height: var(--height);

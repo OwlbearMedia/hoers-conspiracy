@@ -8,16 +8,21 @@ const store = new Vuex.Store({
   state: {
     leads: {
       one: {
-        top: 50,
-        left: 50,
+        top: 56,
+        left: 367,
         content: 'This is a clue'
       },
       two: {
-        top: 150,
-        left: 350,
+        top: 298,
+        left: 210,
         content: 'This is a related clue'
       },
       three: {
+        top: 269,
+        left: 526,
+        content: 'Yep, another connection'
+      },
+      four: {
         top: 75,
         left: 900,
         content: 'This is a clue unrelated to the others'
@@ -28,7 +33,12 @@ const store = new Vuex.Store({
         id: 1,
         pointA: 'one',
         pointB: 'two'
-      }
+      },
+      {
+        id: 1,
+        pointA: 'two',
+        pointB: 'three'
+      },
     ],
   },
   mutations,

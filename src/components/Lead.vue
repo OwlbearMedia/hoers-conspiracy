@@ -1,6 +1,7 @@
 <template>
   <div class="lead" :style="postion" @mouseover="showControls = true" @mouseout="showControls = false">
     <div class="header">
+      <img class="tack" src="../assets/tack.png" alt="tack">
       <div class="move-me" :class="{ 'show': showControls }" @mousedown="dragMouseDown">
         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrows-move" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M6.5 8a.5.5 0 0 0-.5-.5H1.5a.5.5 0 0 0 0 1H6a.5.5 0 0 0 .5-.5z"/>
@@ -100,6 +101,13 @@ export default {
   text-align: right;
   padding: 5px;
   height: 20px;
+}
+.tack {
+  width: 27px;
+  position: absolute;
+  top: 3px;
+  left: 57px;
+  z-index: 300;
 }
 .content {
   padding: 5px 20px 20px 20px;
