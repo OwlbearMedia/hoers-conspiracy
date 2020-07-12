@@ -4,4 +4,4 @@ const app = new Koa();
 
 app.use(serve(__dirname + '/dist'));
 
-app.listen(3000);
+app.listen(process.env.PORT || 1917);
