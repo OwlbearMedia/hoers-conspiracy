@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <lead v-for="(lead, id) in leads" :key="id" :id="id">{{ lead.content }}</lead>
+    <lead v-for="(lead, id) in leads" :key="id" :id="id"></lead>
     <connection
       v-for="connection in connections"
       :key="connection.id"
@@ -33,8 +33,8 @@ export default {
 
 <style scoped>
 .board {
-  width: 100%;
-  height: 750px;
+  width: calc(100vw - 10px);
+  height: calc(100vh - 10px);
   position: relative;
   border: 5px solid #737e7a;
   background: url(../assets/board.jpg);

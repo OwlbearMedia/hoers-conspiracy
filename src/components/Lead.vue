@@ -1,5 +1,5 @@
 <template>
-  <div class="lead" :style="postion" @mouseover="showControls = true" @mouseout="showControls = false">
+  <div class="lead" :class="type" :style="postion" @mouseover="showControls = true" @mouseout="showControls = false">
     <div class="header">
       <img class="tack" src="../assets/tack.png" alt="tack">
       <div class="move-me" :class="{ 'show': showControls }" @mousedown="dragMouseDown">
@@ -12,12 +12,14 @@
         </svg>
       </div>
     </div>
-    <div class="content"><slot></slot></div>
+    <div v-if="type === 'note'" class="content">{{ content }}</div>
+    <img v-if="type === 'image'" class="img" :src="getImgUrl(content)" alt="">
+    <div v-if="title" class="title">{{ title }}</div>
   </div>
 </template>
 
 <script>
-// import debounce from 'lodash';
+import debounce from 'lodash';
 
 export default {
   name: 'Lead',
@@ -43,6 +45,15 @@ export default {
     left() {
       return this.$store.state.leads[this.id].left;
     },
+    type() {
+      return this.$store.state.leads[this.id].type;
+    },
+    title() {
+      return this.$store.state.leads[this.id].title;
+    },
+    content() {
+      return this.$store.state.leads[this.id].content;
+    },
     postion() {
       return {
         '--top': `${this.top}px`,
@@ -51,6 +62,10 @@ export default {
     }
   },
   methods: {
+    getImgUrl(pet) {
+      var images = require.context('../assets/', false, /\.jpg$/)
+      return images('./' + pet + ".jpg")
+    },
     dragMouseDown(e) {
       e = e || window.event;
       e.preventDefault();
@@ -81,12 +96,54 @@ export default {
       document.removeEventListener('mousemove', this.elementDrag);
       document.removeEventListener('mouseup', this.endDrag);
     }
-  }
+  },
+  filters: {
+    noSoMany() {
+      debounce(this.elementDrag, 200)
+    }
+  },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .lead {
+  position: absolute;
+  top: var(--top);
+  left: var(--left);
+  filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
+}
+
+.header {
+  text-align: right;
+  padding: 5px;
+  height: 20px;
+}
+
+.image {
+  background-color: #f5f2d0;
+  padding: 0px 10px 25px 15px;
+  filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
+  
+  .img {
+    width: 150px;
+    transform: rotate(-1deg);
+  }
+}
+
+.title {
+  position: absolute;
+  bottom: 5px;
+  background-color: #FDF799;
+  padding: 5px;
+  filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.1));
+  font-family: ShadowsIntoLight, Avenir, Helvetica, Arial, sans-serif;
+  width: 80px;
+  height: 30px;
+  right: 25px;
+  transform: rotate(1deg);
+}
+
+.note {
   position: absolute;
   top: var(--top);
   left: var(--left);
@@ -95,13 +152,14 @@ export default {
   height: 150px;
   display: grid;
   grid-template-rows: 20% 80%;
-  filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
+
+  .content {
+    padding: 5px 20px 20px 20px;
+    font-family: ShadowsIntoLight, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 20px;
+  }
 }
-.header {
-  text-align: right;
-  padding: 5px;
-  height: 20px;
-}
+
 .tack {
   width: 27px;
   position: absolute;
@@ -109,12 +167,9 @@ export default {
   left: 57px;
   z-index: 300;
 }
-.content {
-  padding: 5px 20px 20px 20px;
-  font-family: ShadowsIntoLight, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 20px;
-}
+
 .move-me {
+  position: absolute;
   text-align: right;
   border: 1px solid black;
   display: inline-block;
@@ -123,7 +178,9 @@ export default {
   cursor: move;
   opacity: 0.25;
   visibility: hidden;
+  right: 5px;
 }
+
 .move-me.show {
   visibility: visible;
 }
