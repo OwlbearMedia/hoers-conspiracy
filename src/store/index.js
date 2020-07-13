@@ -46,8 +46,8 @@ const store = new Vuex.Store({
           children: [],
         },
         six: {
-          top: 690,
-          left: 84,
+          top: 662,
+          left: 210,
           type: 'note',
           content: 'I think this dude might be a vampire',
           children: [],
@@ -55,8 +55,8 @@ const store = new Vuex.Store({
       },
       person: {
         five: {
-          top: 516,
-          left: 177,
+          top: 594,
+          left: 52,
           type: 'person',
           title: 'Vlad III',
           content: 'Vlad-III',

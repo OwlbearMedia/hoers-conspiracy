@@ -10,6 +10,10 @@
       :pointA="link.pointA"
       :pointB="link.pointB">
     </conspiracy-node-link>
+    <div class="frame-top"></div>
+    <div class="frame-bottom"></div>
+    <div class="frame-left"></div>
+    <div class="frame-right"></div>
   </div>
 </template>
 
@@ -35,11 +39,28 @@ export default {
 </script>
 
 <style scoped>
+.frame-top, .frame-bottom, .frame-left, .frame-right {
+	background: #737e7a;
+	position: fixed;
+}
+.frame-left, .frame-right {
+  top: 0; bottom: 0;
+  width: 8px;
+}
+.frame-left { left: 0; }
+.frame-right { right: 0; }
+		
+.frame-top, .frame-bottom {
+  left: 0; right: 0;
+  height: 8px;
+}
+.frame-top { top: 0; }
+.frame-bottom { bottom: 0; }
+
 .board {
-  width: 1670px;
-  height: 856px;
+  width: 10000px;
+  height: 10000px;
   position: relative;
-  border: 5px solid #737e7a;
   background: url(../assets/board.jpg);
 }
 </style>
