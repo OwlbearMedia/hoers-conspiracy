@@ -6,77 +6,119 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    leads: {
-      zero: {
-        top: 56,
-        left: 367,
-        type: 'image',
-        content: 'map-europe-5'
+    nodes: {
+      map: {
+        zero: {
+          top: 56,
+          left: 367,
+          type: 'map',
+          content: 'map-europe-5',
+          children: ['seven'],
+        },
       },
-      one: {
-        top: 45,
-        left: 47,
-        type: 'note',
-        content: 'This is a clue'
+      note: {
+        one: {
+          top: 45,
+          left: 47,
+          type: 'note',
+          content: 'This is a clue',
+          children: [],
+        },
+        two: {
+          top: 142,
+          left: 165,
+          type: 'note',
+          content: 'This is a related clue',
+          children: [],
+        },
+        three: {
+          top: 315,
+          left: 30,
+          type: 'note',
+          content: 'Yep, another connection',
+          children: [],
+        },
+        four: {
+          top: 23,
+          left: 584,
+          type: 'note',
+          content: 'This is a clue unrelated to the others',
+          children: [],
+        },
+        six: {
+          top: 690,
+          left: 84,
+          type: 'note',
+          content: 'I think this dude might be a vampire',
+          children: [],
+        },
       },
-      two: {
-        top: 142,
-        left: 165,
-        type: 'note',
-        content: 'This is a related clue'
+      person: {
+        five: {
+          top: 516,
+          left: 177,
+          type: 'person',
+          title: 'Vlad III',
+          content: 'Vlad-III',
+          children: [],
+        },
       },
-      three: {
-        top: 315,
-        left: 30,
-        type: 'note',
-        content: 'Yep, another connection'
-      },
-      four: {
-        top: 23,
-        left: 584,
-        type: 'note',
-        content: 'This is a clue unrelated to the others'
-      },
-      five: {
-        top: 516,
-        left: 177,
-        type: 'person',
-        title: 'Vlad III',
-        content: 'Vlad-III'
-      },
-      six: {
-        top: 690,
-        left: 84,
-        type: 'note',
-        content: 'I think this dude might be a vampire'
-      },
+    },
+    pins: {
       seven: {
         top: 513,
         left: 827,
+        localTop: 458,
+        localLeft: 456,
         type: 'pin',
-        content: 'Rumania'
+        parent: 'zero',
+        content: 'Rumania',
       },
     },
-    connections: [
+    links: [
       {
         id: 1,
-        pointA: 'one',
-        pointB: 'two'
+        pointA: {
+          id: 'one',
+          type: 'note'
+        },
+        pointB: {
+          id: 'two',
+          type: 'note'
+        },
       },
       {
         id: 2,
-        pointA: 'two',
-        pointB: 'three'
+        pointA: {
+          id: 'two',
+          type: 'note'
+        },
+        pointB:{
+          id: 'three',
+          type: 'note'
+        },
       },
       {
         id: 3,
-        pointA: 'seven',
-        pointB: 'five'
+        pointA: {
+          id: 'seven',
+          type: 'pin'
+        },
+        pointB: {
+          id: 'five',
+          type: 'person'
+        },
       },
       {
         id: 4,
-        pointA: 'seven',
-        pointB: 'two'
+        pointA: {
+          id: 'seven',
+          type: 'pin'
+        },
+        pointB: {
+          id: 'two',
+          type: 'note'
+        },
       },
     ],
   },

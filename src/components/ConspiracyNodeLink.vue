@@ -4,42 +4,44 @@
 
 <script>
 export default {
-  name: 'Connection',
+  name: 'ConspiracyNodeLink',
   props: {
     pointA: {
-      type: String,
+      type: Object,
       required: true
     },
     pointB: {
-      type: String,
+      type: Object,
       required: true
     }
   },
   computed: {
     off1() {
+      const top = this.pointA.type === 'pin' ?
+        this.$store.state.pins[this.pointA.id].top : this.$store.state.nodes[this.pointA.type][this.pointA.id].top;
+      const left = this.pointA.type === 'pin' ?
+        this.$store.state.pins[this.pointA.id].left : this.$store.state.nodes[this.pointA.type][this.pointA.id].left;
+
       return {
-        top: this.$store.state.leads[this.pointA].top,
-        left: this.$store.state.leads[this.pointA].left,
-        type: this.$store.state.leads[this.pointA].type,
+        top,
+        left,
       }
     },
     off2() {
+      const top = this.pointB.type === 'pin' ?
+        this.$store.state.pins[this.pointB.id].top : this.$store.state.nodes[this.pointB.type][this.pointB.id].top;
+      const left = this.pointB.type === 'pin' ?
+        this.$store.state.pins[this.pointB.id].left : this.$store.state.nodes[this.pointB.type][this.pointB.id].left;
+
       return {
-        top: this.$store.state.leads[this.pointB].top,
-        left: this.$store.state.leads[this.pointB].left,
-        type: this.$store.state.leads[this.pointB].type,
-      }
-    },
-    getOffset(point) {
-      return {
-        top: this.$store.state.leads[point].top,
-        left: this.$store.state.leads[point].left,
+        top,
+        left,
       }
     },
     connect() {
       const thickness = 4;
-      const offset1 = this.off1.type === 'pin' ? 15 : 75;
-      const offset2 = this.off2.type === 'pin' ? 15 : 75;
+      const offset1 = this.pointA.type === 'pin' ? 15 : 75;
+      const offset2 = this.pointB.type === 'pin' ? 15 : 75;
       // bottom right
       var x1 = this.off1.left + offset1;
       var y1 = this.off1.top + 10;

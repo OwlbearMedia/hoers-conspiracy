@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <board></board>
+    <conspiracy-board></conspiracy-board>
   </div>
 </template>
 
 <script>
-import Board from './components/Board.vue';
+import ConspiracyBoard from './components/ConspiracyBoard.vue';
 
 export default {
   name: 'App',
   components: {
-    Board
+    ConspiracyBoard
   }
 };
 </script>
@@ -22,8 +22,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin: 30px; */
 }
+
 body {
   margin: 0;
 }

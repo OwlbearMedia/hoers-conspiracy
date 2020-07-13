@@ -1,7 +1,7 @@
 <template>
-  <div class="lead" :class="type" :style="postion" @mouseover="showControls = true" @mouseout="showControls = false">
+  <div :id="id" class="lead" :class="type" :style="postion" @mouseover="showControls = true" @mouseout="showControls = false">
     <div class="header">
-      <img v-if="type !== 'image'" class="tack" src="../assets/tack.png" alt="tack">
+      <img v-if="type !== 'map'" class="tack" src="../assets/tack.png" alt="tack">
       <div class="move-me" :class="{ 'show': showControls }" @mousedown="dragMouseDown">
         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrows-move" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M6.5 8a.5.5 0 0 0-.5-.5H1.5a.5.5 0 0 0 0 1H6a.5.5 0 0 0 .5-.5z"/>
@@ -14,18 +14,23 @@
     </div>
     <div v-if="type === 'note'" class="content">{{ content }}</div>
     <img v-if="type === 'person'" class="img" :src="getImgUrl(content)" alt="">
-    <img v-if="type === 'image'" class="img-for-real" :src="getImgUrl(content)" alt="">
+    <div class="map-content" v-if="type === 'map'">
+      <img class="img-for-real" :src="getImgUrl(content)" alt="">
+      <conspiracy-node v-for="child in children" :key="child" type="pin" :id="child" :ref="child"></conspiracy-node>
+    </div>
     <div v-if="title" class="title">{{ title }}</div>
   </div>
 </template>
 
 <script>
-import debounce from 'lodash';
-
 export default {
-  name: 'Lead',
+  name: 'ConspiracyNode',
   props: {
     id: {
+      type: String,
+      required: true,
+    },
+    type: {
       type: String,
       required: true,
     },
@@ -40,26 +45,39 @@ export default {
     }
   },
   computed: {
+    data() {
+      return this.type === 'pin' ? this.$store.state.pins[this.id] : this.$store.state.nodes[this.type][this.id];
+    },
     top() {
-      return this.$store.state.leads[this.id].top;
+      return this.data.top;
     },
     left() {
-      return this.$store.state.leads[this.id].left;
-    },
-    type() {
-      return this.$store.state.leads[this.id].type;
+      return this.data.left;
     },
     title() {
-      return this.$store.state.leads[this.id].title;
+      return this.data.title;
     },
     content() {
-      return this.$store.state.leads[this.id].content;
+      return this.data.content;
+    },
+    children() {
+      return this.data.children;
     },
     postion() {
-      return {
+      return this.type === 'pin' ? {
+        '--top': `${this.data.localTop}px`,
+        '--left': `${this.data.localLeft}px`,
+      } : {
         '--top': `${this.top}px`,
         '--left': `${this.left}px`,
       };
+    },
+    pins() {
+      const pins = [];
+      this.children.forEach(child => {
+        pins.push(this.$store.state.pins[child]);
+      });
+      return pins;
     }
   },
   methods: {
@@ -86,22 +104,44 @@ export default {
         this.pos2 = this.pos4 - e.clientY;
         this.pos3 = e.clientX;
         this.pos4 = e.clientY;
+
+        if (this.children && this.children.length) {
+          const pin = this.$refs.seven[0].$el
+
+          this.$store.commit('movePin', {
+            id: 'seven',
+            top: (pin.getClientRects()[0].top - 5 - this.pos2),
+            left: (pin.getClientRects()[0].left - 5 - this.pos1),
+          });
+        }
+
         // set the element's new position:
-        this.$store.commit('moveLead', {
-          id: this.id,
-          top: (el.offsetTop - this.pos2),
-          left: (el.offsetLeft - this.pos1),
-        });
+        if (this.id !== 'seven') {
+          this.$store.commit('moveNode', {
+            id: this.id,
+            type: this.type,
+            top: (el.offsetTop - this.pos2),
+            left: (el.offsetLeft - this.pos1),
+          });
+        } else {
+          this.$store.commit('movePin', {
+            id: this.id,
+            top: (this.$el.getClientRects()[0].top - 5 - this.pos2),
+            left: (this.$el.getClientRects()[0].left - 5 - this.pos1),
+          });
+
+          this.$store.commit('moveChild', {
+            id: this.id,
+            top: (el.offsetTop - this.pos2),
+            left: (el.offsetLeft - this.pos1),
+          });
+        }
+        
     },
     endDrag() {
       document.removeEventListener('mousemove', this.elementDrag);
       document.removeEventListener('mouseup', this.endDrag);
-    }
-  },
-  filters: {
-    noSoMany() {
-      debounce(this.elementDrag, 200)
-    }
+    },
   },
 };
 </script>
@@ -120,7 +160,7 @@ export default {
   height: 20px;
 }
 
-.image {
+.map {
   .img-for-real {
     width: 900px;
   }
@@ -200,8 +240,13 @@ export default {
   z-index: 350;
 }
 
-.image .move-me {
+.map .move-me {
   top: 35px;
+  opacity: 1;
+}
+
+.map .map-content .move-me {
+  top: 0px;
   opacity: 1;
 }
 
