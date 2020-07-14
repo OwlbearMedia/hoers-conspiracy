@@ -60,9 +60,10 @@ const store = new Vuex.Store({
         id: 8,
         top: 703,
         left: 453,
-        type: 'note',
-        content: 'Could this be related???',
-        image: 'newspaper',
+        type: 'handout',
+        title: 'Could this be related???',
+        content: '',
+        image: 'newspaper.jpg',
         children: [],
       },
       {
@@ -71,7 +72,8 @@ const store = new Vuex.Store({
         left: 52,
         type: 'person',
         title: 'Vlad III',
-        content: 'Vlad-III',
+        content: '',
+        image: 'Vlad-III.jpg',
         children: [],
       },
       {
@@ -129,6 +131,17 @@ const store = new Vuex.Store({
         pointB: {
           id: 2,
           type: 'note'
+        },
+      },
+      {
+        id: 5,
+        pointA: {
+          id: 7,
+          type: 'pin'
+        },
+        pointB: {
+          id: 8,
+          type: 'handout'
         },
       },
     ],

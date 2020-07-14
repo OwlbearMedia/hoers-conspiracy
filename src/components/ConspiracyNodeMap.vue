@@ -1,6 +1,6 @@
 <template>
   <div class="map-content">
-    <img class="img-for-real" :src="getImgUrl(nodeData.content, 'bar')" alt="">
+    <img class="img-for-real" :src="getImgUrl(nodeData.content)" alt="">
       <conspiracy-node-child
         v-for="child in childNodes"
         :key="child.id"
@@ -29,8 +29,7 @@ export default {
     },
   },
   methods: {
-    getImgUrl(pet, test) {
-      console.log('why am I being called as the mouse moves?', test)
+    getImgUrl(pet) {
       var images = require.context('../assets/', false, /\.jpg$/)
       return images('./' + pet + ".jpg")
     },

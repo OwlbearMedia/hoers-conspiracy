@@ -1,28 +1,39 @@
 <template>
   <div class="node" :class="type" :style="stylePostion" @mouseover="showControls = true" @mouseout="showControls = false">
-    <div class="header">
-      <img v-if="type !== 'map'" class="tack" src="../assets/tack.png" alt="tack">
-      <conspiracy-node-move-button
-        :showControls="showControls"
-        @drag-mouse-down="dragMouseDown">
-      </conspiracy-node-move-button>
-    </div>
-    <div v-if="type === 'note'" class="content">{{ nodeData.content }}</div>
-    <img v-if="type === 'person'" class="img" :src="getImgUrl(nodeData.content, 'foo')" alt="">
-    <conspiracy-node-map v-if="type === 'map'" :node-data="nodeData" :child-nodes="children"></conspiracy-node-map>
-    <div v-if="nodeData.title" class="title">{{ nodeData.title }}</div>
+    <conspiracy-node-handout
+      v-if="type === 'handout'"
+      :index="index"
+      :node-data="nodeData"
+      :show-controls="showControls"
+      @drag-mouse-down="dragMouseDown">
+    </conspiracy-node-handout>
+    <template v-else>
+      <div class="header">
+        <img v-if="type !== 'map'" class="tack" src="../assets/tack.png" alt="tack">
+        <conspiracy-node-move-button
+          :showControls="showControls"
+          @drag-mouse-down="dragMouseDown">
+        </conspiracy-node-move-button>
+      </div>
+      <div v-if="type === 'note'" class="content">{{ nodeData.content }}</div>
+      <img v-if="imgUrl" class="img" :src="imgUrl" alt="">
+      <conspiracy-node-map v-if="type === 'map'" :node-data="nodeData" :child-nodes="children"></conspiracy-node-map>
+      <div v-if="nodeData.title" class="title">{{ nodeData.title }}</div>
+    </template>
   </div>
 </template>
 
 <script>
 import { movementMixin } from './movementMixin';
 import ConspiracyNodeMap from './ConspiracyNodeMap.vue';
+import ConspiracyNodeHandout from './ConspiracyNodeHandout.vue';
 import ConspiracyNodeMoveButton from './ConspiracyNodeMoveButton.vue';
 
 export default {
   name: 'ConspiracyNode',
   components: {
     ConspiracyNodeMap,
+    ConspiracyNodeHandout,
     ConspiracyNodeMoveButton,
   },
   mixins: [movementMixin],
@@ -53,6 +64,14 @@ export default {
     left() {
       return this.nodeData.left;
     },
+    imgUrl() {
+      let src = this.nodeData.image;
+      if (src) {
+        const images = require.context('../assets/', false, /\.jpg$/)
+        src = images(`./${src}`)
+      }
+      return src;
+    },
     children() {
       return this.nodeData.children.map(child => ({
         id: child,
@@ -67,11 +86,6 @@ export default {
     },
   },
   methods: {
-    getImgUrl(pet, test) {
-      console.log('why am I being called as the mouse moves?', test)
-      var images = require.context('../assets/', false, /\.jpg$/)
-      return images('./' + pet + ".jpg")
-    },
     moveNode() {
       this.$store.commit('moveNodeByIndex', {
         index: this.index,

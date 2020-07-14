@@ -34,15 +34,31 @@ export default {
         left: this.$store.state.nodes[this.pointBIndex].left,
       }
     },
+    offset1() {
+      if (this.pointA.type === 'pin') {
+        return 15;
+      } else if (this.pointA.type === 'handout') {
+        return 175;
+      } else {
+        return 75;
+      }
+    },
+    offset2() {
+      if (this.pointB.type === 'pin') {
+        return 15;
+      } else if (this.pointB.type === 'handout') {
+        return 175;
+      } else {
+        return 75;
+      }
+    },
     connect() {
       const thickness = 4;
-      const offset1 = this.pointA.type === 'pin' ? 15 : 75;
-      const offset2 = this.pointB.type === 'pin' ? 15 : 75;
       // bottom right
-      var x1 = this.off1.left + offset1;
+      var x1 = this.off1.left + this.offset1;
       var y1 = this.off1.top + 10;
       // top right
-      var x2 = this.off2.left + offset2;
+      var x2 = this.off2.left + this.offset2;
       var y2 = this.off2.top + 10;
       // distance
       var length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
