@@ -1,15 +1,13 @@
 <template>
   <div class="board">
-    <template v-for="(group, key) in nodes">
-      <conspiracy-node v-for="(node, id) in group" :key="id" :type="key" :id="id"></conspiracy-node>
-    </template>
-    
+    <conspiracy-node v-for="(node, index) in filteredNodes" :key="`node-${index}`" :id="node.id"></conspiracy-node>
     <conspiracy-node-link
-      v-for="link in links"
-      :key="link.id"
+      v-for="(link, index) in links"
+      :key="`link-${index}`"
       :pointA="link.pointA"
       :pointB="link.pointB">
     </conspiracy-node-link>
+
     <div class="frame-top"></div>
     <div class="frame-bottom"></div>
     <div class="frame-left"></div>
@@ -30,6 +28,9 @@ export default {
   computed: {
     nodes() {
       return this.$store.state.nodes;
+    },
+    filteredNodes() {
+      return this.nodes.filter(node => !node.isChild);
     },
     links() {
       return this.$store.state.links;

@@ -16,26 +16,22 @@ export default {
     }
   },
   computed: {
+    pointAIndex() {
+      return this.$store.getters.getNodeIndexById(this.pointA.id);
+    },
+    pointBIndex() {
+      return this.$store.getters.getNodeIndexById(this.pointB.id);
+    },
     off1() {
-      const top = this.pointA.type === 'pin' ?
-        this.$store.state.pins[this.pointA.id].top : this.$store.state.nodes[this.pointA.type][this.pointA.id].top;
-      const left = this.pointA.type === 'pin' ?
-        this.$store.state.pins[this.pointA.id].left : this.$store.state.nodes[this.pointA.type][this.pointA.id].left;
-
       return {
-        top,
-        left,
+        top: this.$store.state.nodes[this.pointAIndex].top,
+        left: this.$store.state.nodes[this.pointAIndex].left,
       }
     },
     off2() {
-      const top = this.pointB.type === 'pin' ?
-        this.$store.state.pins[this.pointB.id].top : this.$store.state.nodes[this.pointB.type][this.pointB.id].top;
-      const left = this.pointB.type === 'pin' ?
-        this.$store.state.pins[this.pointB.id].left : this.$store.state.nodes[this.pointB.type][this.pointB.id].left;
-
       return {
-        top,
-        left,
+        top: this.$store.state.nodes[this.pointBIndex].top,
+        left: this.$store.state.nodes[this.pointBIndex].left,
       }
     },
     connect() {

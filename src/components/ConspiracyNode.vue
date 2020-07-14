@@ -1,153 +1,103 @@
 <template>
-  <div :id="id" class="lead" :class="type" :style="postion" @mouseover="showControls = true" @mouseout="showControls = false">
+  <div class="node" :class="type" :style="stylePostion" @mouseover="showControls = true" @mouseout="showControls = false">
     <div class="header">
       <img v-if="type !== 'map'" class="tack" src="../assets/tack.png" alt="tack">
-      <div class="move-me" :class="{ 'show': showControls }" @mousedown="dragMouseDown">
-        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrows-move" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M6.5 8a.5.5 0 0 0-.5-.5H1.5a.5.5 0 0 0 0 1H6a.5.5 0 0 0 .5-.5z"/>
-          <path fill-rule="evenodd" d="M3.854 5.646a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L2.207 8l1.647-1.646a.5.5 0 0 0 0-.708zM9.5 8a.5.5 0 0 1 .5-.5h4.5a.5.5 0 0 1 0 1H10a.5.5 0 0 1-.5-.5z"/>
-          <path fill-rule="evenodd" d="M12.146 5.646a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L13.793 8l-1.647-1.646a.5.5 0 0 1 0-.708zM8 9.5a.5.5 0 0 0-.5.5v4.5a.5.5 0 0 0 1 0V10a.5.5 0 0 0-.5-.5z"/>
-          <path fill-rule="evenodd" d="M5.646 12.146a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8 13.793l-1.646-1.647a.5.5 0 0 0-.708 0zM8 6.5a.5.5 0 0 1-.5-.5V1.5a.5.5 0 0 1 1 0V6a.5.5 0 0 1-.5.5z"/>
-          <path fill-rule="evenodd" d="M5.646 3.854a.5.5 0 0 1 0-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8 2.207 6.354 3.854a.5.5 0 0 1-.708 0z"/>
-        </svg>
-      </div>
+      <conspiracy-node-move-button
+        :showControls="showControls"
+        @drag-mouse-down="dragMouseDown">
+      </conspiracy-node-move-button>
     </div>
-    <div v-if="type === 'note'" class="content">{{ content }}</div>
-    <img v-if="type === 'person'" class="img" :src="getImgUrl(content)" alt="">
-    <div class="map-content" v-if="type === 'map'">
-      <img class="img-for-real" :src="getImgUrl(content)" alt="">
-      <conspiracy-node v-for="child in children" :key="child" type="pin" :id="child" :ref="child"></conspiracy-node>
-    </div>
-    <div v-if="title" class="title">{{ title }}</div>
+    <div v-if="type === 'note'" class="content">{{ nodeData.content }}</div>
+    <img v-if="type === 'person'" class="img" :src="getImgUrl(nodeData.content, 'foo')" alt="">
+    <conspiracy-node-map v-if="type === 'map'" :node-data="nodeData" :child-nodes="children"></conspiracy-node-map>
+    <div v-if="nodeData.title" class="title">{{ nodeData.title }}</div>
   </div>
 </template>
 
 <script>
+import { movementMixin } from './movementMixin';
+import ConspiracyNodeMap from './ConspiracyNodeMap.vue';
+import ConspiracyNodeMoveButton from './ConspiracyNodeMoveButton.vue';
+
 export default {
   name: 'ConspiracyNode',
+  components: {
+    ConspiracyNodeMap,
+    ConspiracyNodeMoveButton,
+  },
+  mixins: [movementMixin],
   props: {
     id: {
-      type: String,
-      required: true,
-    },
-    type: {
-      type: String,
+      type: Number,
       required: true,
     },
   },
   data() {
     return {
       showControls: false,
-      pos1: 0,
-      pos2: 0,
-      pos3: 0,
-      pos4: 0,
-    }
+    };
   },
   computed: {
-    data() {
-      return this.type === 'pin' ? this.$store.state.pins[this.id] : this.$store.state.nodes[this.type][this.id];
+    index() {
+      return this.$store.getters.getNodeIndexById(this.id);
+    },
+    nodeData() {
+      return this.$store.state.nodes[this.index];
+    },
+    type() {
+      return this.nodeData.type;
     },
     top() {
-      return this.data.top;
+      return this.nodeData.top;
     },
     left() {
-      return this.data.left;
-    },
-    title() {
-      return this.data.title;
-    },
-    content() {
-      return this.data.content;
+      return this.nodeData.left;
     },
     children() {
-      return this.data.children;
+      return this.nodeData.children.map(child => ({
+        id: child,
+        index: this.$store.getters.getNodeIndexById(child)
+      }));
     },
-    postion() {
-      return this.type === 'pin' ? {
-        '--top': `${this.data.localTop}px`,
-        '--left': `${this.data.localLeft}px`,
-      } : {
+    stylePostion() {
+      return {
         '--top': `${this.top}px`,
         '--left': `${this.left}px`,
       };
     },
-    pins() {
-      const pins = [];
-      this.children.forEach(child => {
-        pins.push(this.$store.state.pins[child]);
-      });
-      return pins;
-    }
   },
   methods: {
-    getImgUrl(pet) {
+    getImgUrl(pet, test) {
+      console.log('why am I being called as the mouse moves?', test)
       var images = require.context('../assets/', false, /\.jpg$/)
       return images('./' + pet + ".jpg")
     },
-    dragMouseDown(e) {
-      e = e || window.event;
-      e.preventDefault();
-      // get the mouse cursor position at startup:
-      this.pos3 = e.clientX;
-      this.pos4 = e.clientY;
+    moveNode() {
+      this.$store.commit('moveNodeByIndex', {
+        index: this.index,
+        top: (this.$el.offsetTop - this.delta.top),
+        left: (this.$el.offsetLeft - this.delta.left),
+      });
 
-      document.addEventListener('mousemove', this.elementDrag);
-      document.addEventListener('mouseup', this.endDrag);
+      this.updateChildren();
     },
-    elementDrag(e) { // This should really be debounced
-        e = e || window.event;
-        e.preventDefault();
-        const el = this.$el;
-        // calculate the new cursor position:
-        this.pos1 = this.pos3 - e.clientX;
-        this.pos2 = this.pos4 - e.clientY;
-        this.pos3 = e.clientX;
-        this.pos4 = e.clientY;
-
-        if (this.children && this.children.length) {
-          const pin = this.$refs.seven[0].$el
-
-          this.$store.commit('movePin', {
-            id: 'seven',
-            top: (pin.getClientRects()[0].top - 5 - this.pos2),
-            left: (pin.getClientRects()[0].left - 5 - this.pos1),
+    updateChildren() {
+      if (this.children.length) {
+        this.children.forEach(child => {
+          this.$store.commit('moveChildLinkPosition', {
+            index: child.index,
+            top: (this.$store.state.nodes[child.index].top - this.delta.top),
+            left: (this.$store.state.nodes[child.index].left - this.delta.left),
           });
-        }
-
-        // set the element's new position:
-        if (this.id !== 'seven') {
-          this.$store.commit('moveNode', {
-            id: this.id,
-            type: this.type,
-            top: (el.offsetTop - this.pos2),
-            left: (el.offsetLeft - this.pos1),
-          });
-        } else {
-          this.$store.commit('movePin', {
-            id: this.id,
-            top: (this.$el.getClientRects()[0].top - 5 - this.pos2),
-            left: (this.$el.getClientRects()[0].left - 5 - this.pos1),
-          });
-
-          this.$store.commit('moveChild', {
-            id: this.id,
-            top: (el.offsetTop - this.pos2),
-            left: (el.offsetLeft - this.pos1),
-          });
-        }
-        
-    },
-    endDrag() {
-      document.removeEventListener('mousemove', this.elementDrag);
-      document.removeEventListener('mouseup', this.endDrag);
+        });
+      }
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.lead {
+.node {
   position: absolute;
   top: var(--top);
   left: var(--left);
@@ -158,12 +108,6 @@ export default {
   text-align: right;
   padding: 5px;
   height: 20px;
-}
-
-.map {
-  .img-for-real {
-    width: 900px;
-  }
 }
 
 .person {
@@ -215,31 +159,6 @@ export default {
   z-index: 300;
 }
 
-.pin {
-  width: 30px;
-  height: 30px;
-}
-
-.pin .tack {
-  top: 0px;
-  left: 0px;
-}
-
-.move-me {
-  position: absolute;
-  text-align: right;
-  border: 1px solid black;
-  display: inline-block;
-  border-radius: 3px;
-  height: 17px;
-  cursor: move;
-  opacity: 0.25;
-  visibility: hidden;
-  right: 5px;
-  top: 5px;
-  z-index: 350;
-}
-
 .map .move-me {
   top: 35px;
   opacity: 1;
@@ -248,9 +167,5 @@ export default {
 .map .map-content .move-me {
   top: 0px;
   opacity: 1;
-}
-
-.move-me.show {
-  visibility: visible;
 }
 </style>

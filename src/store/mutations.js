@@ -1,15 +1,17 @@
 const mutations = {
-  moveNode(state, payload) {
-    state.nodes[payload.type][payload.id].top = payload.top;
-    state.nodes[payload.type][payload.id].left = payload.left;
+  moveNodeByIndex(state, payload) {
+    state.nodes[payload.index].top = payload.top;
+    state.nodes[payload.index].left = payload.left;
   },
-  movePin(state, payload) {
-    state.pins[payload.id].top = payload.top;
-    state.pins[payload.id].left = payload.left;
+  moveChildLinkPosition(state, payload) {
+    state.nodes[payload.index].top = payload.top;
+    state.nodes[payload.index].left = payload.left;
   },
   moveChild(state, payload) {
-    state.pins[payload.id].localTop = payload.top;
-    state.pins[payload.id].localLeft = payload.left;
+    state.nodes[payload.index].top = payload.top;
+    state.nodes[payload.index].left = payload.left;
+    state.nodes[payload.index].localTop = payload.localTop;
+    state.nodes[payload.index].localLeft = payload.localLeft;
   }
 };
 
