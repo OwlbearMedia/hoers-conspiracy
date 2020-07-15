@@ -1,5 +1,11 @@
 <template>
-  <div class="node" :class="type" :style="stylePostion" @mouseover="showControls = true" @mouseout="showControls = false">
+  <div
+    class="node"
+    :class="type"
+    :style="stylePostion"
+    @dblclick="showDialog('modal1')"
+    @mouseover="showControls = true"
+    @mouseout="showControls = false">
     <conspiracy-node-handout
       v-if="type === 'handout'"
       :index="index"
@@ -25,6 +31,7 @@
 
 <script>
 import { movementMixin } from './movementMixin';
+import { modalMixin } from './modalMixin';
 import ConspiracyNodeMap from './ConspiracyNodeMap.vue';
 import ConspiracyNodeHandout from './ConspiracyNodeHandout.vue';
 import ConspiracyNodeMoveButton from './ConspiracyNodeMoveButton.vue';
@@ -36,7 +43,7 @@ export default {
     ConspiracyNodeHandout,
     ConspiracyNodeMoveButton,
   },
-  mixins: [movementMixin],
+  mixins: [movementMixin, modalMixin],
   props: {
     id: {
       type: Number,

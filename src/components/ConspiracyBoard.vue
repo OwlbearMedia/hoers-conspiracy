@@ -12,16 +12,19 @@
     <div class="frame-bottom"></div>
     <div class="frame-left"></div>
     <div class="frame-right"></div>
+    <conspiracy-modal modal-id="modal1">werm</conspiracy-modal>
   </div>
 </template>
 
 <script>
+import ConspiracyModal from './ConspiracyModal.vue';
 import ConspiracyNode from './ConspiracyNode.vue';
 import ConspiracyNodeLink from './ConspiracyNodeLink.vue';
 
 export default {
   name: 'ConspiracyBoard',
   components: {
+    ConspiracyModal,
     ConspiracyNode,
     ConspiracyNodeLink,
   },

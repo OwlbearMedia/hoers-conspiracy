@@ -32,4 +32,8 @@ body {
   font-family: ShadowsIntoLight;
   src: url(./assets/ShadowsIntoLight-Regular.ttf);
 }
+@font-face {
+  font-family: TravelingTypewriter;
+  src: url(./assets/TravelingTypewriter.ttf);
+}
 </style>
