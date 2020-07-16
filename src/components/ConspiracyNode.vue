@@ -3,7 +3,7 @@
     class="node"
     :class="type"
     :style="stylePostion"
-    @dblclick="showDialog('modal1')"
+    @dblclick="showDialog(index)"
     @mouseover="showControls = true"
     @mouseout="showControls = false">
     <conspiracy-node-handout

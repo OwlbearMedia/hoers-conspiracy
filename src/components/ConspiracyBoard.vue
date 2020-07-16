@@ -12,7 +12,7 @@
     <div class="frame-bottom"></div>
     <div class="frame-left"></div>
     <div class="frame-right"></div>
-    <conspiracy-modal modal-id="modal1">werm</conspiracy-modal>
+    <conspiracy-modal></conspiracy-modal>
   </div>
 </template>
 

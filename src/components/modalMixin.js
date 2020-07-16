@@ -1,7 +1,10 @@
 const modalMixin = {
   methods: {
-    showDialog(id, callback) {
-      const dialogBox = DialogBox(id, callback)
+    showDialog(index, callback) {
+      const dialogBox = DialogBox(index, callback);
+
+      this.$store.commit('setDialog', index);
+
       dialogBox.showDialog();
     }
   }
@@ -496,8 +499,8 @@ const modalMixin = {
         _buttons[0].focus();
     },
     
-    _init = function(id, callback) {
-      _dialog = document.getElementById(id);
+    _init = function(callback) {
+      _dialog = document.getElementById('nodeModal');
       _callback = callback; // Register callback function
   
       _dialog.style.visibility = 'hidden'; // We dont want to see anything..
@@ -586,7 +589,7 @@ const modalMixin = {
     };
 
     // Execute constructor
-    _init(id, callback);
+    _init(callback);
   
     // Public interface 
     // this.showDialog = _showDialog;

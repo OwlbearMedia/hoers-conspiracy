@@ -1,37 +1,13 @@
 <template>
-  <div :id="modalId" class="dialog">
+  <div id="nodeModal" class="dialog" :style="bp">
     <div class="titlebar">
       <button>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="presentation" class="cdr-icon_4.0.0 cdr-icon--large_4.0.0"><path d="M13.415 12.006l5.295-5.292a1 1 0 00-1.414-1.415L12 10.591 6.71 5.296A1 1 0 005.295 6.71l5.292 5.295-5.295 5.292a1 1 0 101.414 1.414l5.295-5.292 5.292 5.295a1 1 0 001.414-1.414l-5.292-5.294z"></path></svg>
       </button>
     </div>
     
-    <div class="content">
-      <div class="dossier">
-        <div class="section">
-          <div class="line">Name:</div>
-          <div class="line text">Vlad III</div>
-
-          <div class="line">Aliases:</div>
-          <div class="line text">Vlad the Impaler, Vlad Dracula</div>
-
-          <div class="line">Date of Birth:</div>
-          <div class="line text">Unknown, sometime between 1428 and 1431</div>
-
-          <div class="line">Place of Birth:</div>
-          <div class="line text">Sighișoara, Transylvania, Kingdom of Hungary</div>
-
-          <div class="line">Occupation:</div>
-          <div class="line text">Voivode of Wallachia</div>
-
-          <div class="line last">Status:</div>
-          <div class="line text last">Allegedly died in battle then hacked to pieces in 1476</div>
-        </div>
-        <div class="image-container">
-          <img src="../assets/Vlad-III.jpg" alt="Vlad III" />
-        </div>
-      </div>
-
+    <div class="content" @scroll="scrollContent">
+      <conspiracy-modal-person v-if="nodeData.type === 'person'" :person-data="nodeData"></conspiracy-modal-person>
     </div>
     <!-- <div class="buttonpane">
       <div class="buttonset">
@@ -43,12 +19,46 @@
 </template>
 
 <script>
+import ConspiracyModalPerson from './ConspiracyModalPerson.vue';
+
 export default {
   name: 'ConspiracyModal',
-  props: {
-    modalId: {
-      required: true,
-    }
+  components: {
+    ConspiracyModalPerson,
+  },
+  data() {
+    return {
+      ticking: false,
+      scrollPosition: 0,
+      backgroundPosition: 0,
+    };
+  },
+  computed: {
+    bp() {
+      return {
+        '--bp': `-${this.backgroundPosition}px`
+      }
+    },
+    currentDialog() {
+      return this.$store.state.currentDialog;
+    },
+    nodeData() {
+      return this.$store.state.nodes[this.currentDialog];
+    },
+  },
+  methods: {
+    scrollContent($event) {
+      this.scrollPosition = $event.target.scrollTop;
+      
+      if (!this.ticking) {
+        window.requestAnimationFrame(() => {
+          this.backgroundPosition = this.scrollPosition;
+          this.ticking = false;
+        });
+
+        this.ticking = true;
+      }
+    },
   },
 };
 </script>
@@ -68,12 +78,16 @@ export default {
   font-family: Verdana, sans-serif;
   font-weight: 400;
   color: #fff;
-  background: url(../assets/rice-paper.jpg);
+  // transition: all 0.1s ease-out;
+  background: url(../assets/poper.jpg);
+  background-position-y: var(--bp);
+  background-repeat: no-repeat;
   margin: 0;
   position: absolute;
   width: 900px;
-  height: 800px;
-  filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
+  height: 85vh;
+  filter: drop-shadow(0px 0 12px rgba(0, 0, 0, 0.7));
+  
 }
 .dialog .titlebar {
   height: 32px; /* same as .dialog>button height */
@@ -81,63 +95,23 @@ export default {
   vertical-align: middle;
   font-size: 1.2em;
   padding: 0 8px 0 8px; /* change NOT allowed */
+  position: relative;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
   text-overflow: ellipsis;
   cursor: move;
 }
+
 .dialog .content {
   position: absolute;
   top: 48px; /* change allowed */
   left: 16px; /* change NOT allowed */
   overflow: auto;
   font-size: 1em;
-  // font-family: King;
+  text-align: left;
   color: #666;
-  // font-size: 100px;
-
-  .dossier {
-    display: grid;
-    margin: 1em 2em;
-    grid-template-columns: 60% 35%;
-    column-gap: 5%;
-    text-align: left;
-
-    .section {
-      border: 2px solid #777;
-      border-radius: 5px;
-      
-      font-weight: bold;
-      display: grid;
-      grid-template-columns: 30% 70%;
-
-      .line {
-        padding: 15px;
-        border-bottom: 2px solid #666; 
-
-        &.last {
-          border-bottom: none; 
-        }
-      }
-      .text {
-        font-family: TravelingTypewriter;
-      }
-    }
-    .image-container {
-      border: 2px solid #777;
-      border-radius: 5px;
-      height: 300;
-      position: relative;
-
-      img {
-        position: absolute;
-        width: 290px;
-        top: 5px;
-        transform: rotate(-2deg)
-      }
-    }
-  }
 }
+
 .dialog .buttonpane:before {
   width: 100%;
   height: 0;

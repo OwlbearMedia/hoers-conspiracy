@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    currentDialog: 0,
     nodes: [
       {
         id: 0,
@@ -72,7 +73,17 @@ const store = new Vuex.Store({
         left: 52,
         type: 'person',
         title: 'Vlad III',
-        content: '',
+        content: {
+          id: '25101917',
+          name: 'Vlad III',
+          aliases: 'Vlad the Impaler, Vlad Dracula',
+          dob: 'Unknown, sometime between 1428 and 1431',
+          birthplace: 'Sighișoara, Transylvania, Kingdom of Hungary',
+          occupation: 'Voivode of Wallachia',
+          status: 'Allegedly died in battle then hacked to pieces in 1476',
+          notes: 'Vlad III is known as Vlad Țepeș (or Vlad the Impaler) in Romanian historiography. This sobriquet is connected to the impalement that was his favorite method of execution. The Ottoman writer Tursun Beg referred to him as Kazıklı Voyvoda (Impaler Lord) around 1500. Mircea the Shepherd, Voivode of Wallachia, used this sobriquet when referring to Vlad III in a letter of grant on 1 April 1551. Vlad’s reputation for cruelty and his patronymic inspired the name of the vampire Count Dracula.',
+          description: 'Pope Pius II’s legate, Niccolò Modrussa, painted the only extant description of Vlad, whom he had met in Budapest. A copy of Vlad’s portrait has been featured in the "monster portrait gallery" in the Ambras Castle at Innsbruck. The picture depicts "a strong, cruel, and somehow tortured man" with "large, deep-set, dark green, and penetrating eyes", according to Florescu. The color of Vlad’s hair cannot be determined, because Modrussa mentions that Vlad was black-haired, while the portrait seems to show that he had fair hair. The picture depicts Vlad with a large lower lip.',
+        },
         image: 'Vlad-III.jpg',
         children: [],
       },
