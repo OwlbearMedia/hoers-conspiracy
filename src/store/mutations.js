@@ -13,8 +13,12 @@ const mutations = {
     state.nodes[payload.index].localTop = payload.localTop;
     state.nodes[payload.index].localLeft = payload.localLeft;
   },
-  setDialog(state, payload) {
+  showDialog(state, payload) {
     state.currentDialog = payload;
+    state.isDialogShown = true;
+  },
+  closeDialog(state) {
+    state.isDialogShown = false;
   },
 };
 

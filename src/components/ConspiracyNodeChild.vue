@@ -48,10 +48,10 @@ export default {
     moveNode() {
       this.$store.commit('moveChild', {
         index: this.index,
-        top: (this.nodeData.top - this.delta.top),
-        left: (this.nodeData.left - this.delta.left),
-        localTop: (this.nodeData.localTop - this.delta.top),
-        localLeft: (this.nodeData.localLeft - this.delta.left),
+        top: (this.nodeData.top + this.delta.top),
+        left: (this.nodeData.left + this.delta.left),
+        localTop: (this.nodeData.localTop + this.delta.top),
+        localLeft: (this.nodeData.localLeft + this.delta.left),
       });
     },
   },

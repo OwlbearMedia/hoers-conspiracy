@@ -79,14 +79,14 @@ export default {
 .person-content {
   text-align: left;
   color: #666;
+  margin: 70px 40px 40px 40px;
 
   .dossier {
     display: grid;
-    margin: 1em 2em;
 
     &.main {
-      grid-template-columns: calc(60% - 25px) calc(40% - 25px);
-      column-gap: 50px;
+      grid-template-columns: calc(60% - 20px) calc(40% - 20px);
+      column-gap: 40px;
     }
 
     &.secondary {
@@ -115,7 +115,7 @@ export default {
       }
 
       .header {
-        color: floralwhite;
+        color: antiquewhite;
         background-color: #777;
         grid-column-start: 1;
         grid-column-end: span 2;

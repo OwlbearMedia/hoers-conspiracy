@@ -96,8 +96,8 @@ export default {
     moveNode() {
       this.$store.commit('moveNodeByIndex', {
         index: this.index,
-        top: (this.$el.offsetTop - this.delta.top),
-        left: (this.$el.offsetLeft - this.delta.left),
+        top: (this.$el.offsetTop + this.delta.top),
+        left: (this.$el.offsetLeft + this.delta.left),
       });
 
       this.updateChildren();
@@ -107,8 +107,8 @@ export default {
         this.children.forEach(child => {
           this.$store.commit('moveChildLinkPosition', {
             index: child.index,
-            top: (this.$store.state.nodes[child.index].top - this.delta.top),
-            left: (this.$store.state.nodes[child.index].left - this.delta.left),
+            top: (this.$store.state.nodes[child.index].top + this.delta.top),
+            left: (this.$store.state.nodes[child.index].left + this.delta.left),
           });
         });
       }
