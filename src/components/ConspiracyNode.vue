@@ -5,33 +5,58 @@
     :style="stylePostion"
     @dblclick="showDialog(index)"
     @mouseover="showControls = true"
-    @mouseout="showControls = false">
+    @mouseout="showControls = false"
+  >
     <conspiracy-node-document
       v-if="type === 'document'"
       :index="index"
       :node-data="nodeData"
       :show-controls="showControls"
-      @drag-mouse-down="dragMouseDown">
-    </conspiracy-node-document>
+      @drag-mouse-down="dragMouseDown"
+    />
     <template v-else>
       <div class="header">
-        <img v-if="type !== 'map'" class="tack" src="../assets/tack.png" alt="tack">
+        <img
+          v-if="type !== 'map'"
+          class="tack"
+          src="../assets/tack.png"
+          alt="tack"
+        >
         <conspiracy-node-move-button
-          :showControls="showControls"
-          @drag-mouse-down="dragMouseDown">
-        </conspiracy-node-move-button>
+          :show-controls="showControls"
+          @drag-mouse-down="dragMouseDown"
+        />
       </div>
-      <div v-if="type === 'note'" class="content">{{ nodeData.title }}</div>
-      <img v-if="imgUrl" class="img" :src="imgUrl" alt="">
-      <conspiracy-node-map v-if="type === 'map'" :node-data="nodeData" :child-nodes="children"></conspiracy-node-map>
-      <div v-if="nodeData.title && type === 'person'" class="title">{{ nodeData.title }}</div>
+      <div
+        v-if="type === 'note'"
+        class="content"
+      >
+        {{ nodeData.title }}
+      </div>
+      <img
+        v-if="imgUrl"
+        class="img"
+        :src="imgUrl"
+        alt=""
+      >
+      <conspiracy-node-map
+        v-if="type === 'map'"
+        :node-data="nodeData"
+        :child-nodes="children"
+      />
+      <div
+        v-if="nodeData.title && type === 'person'"
+        class="title"
+      >
+        {{ nodeData.title }}
+      </div>
     </template>
   </div>
 </template>
 
 <script>
-import { movementMixin } from './movementMixin';
-import { modalMixin } from './modalMixin';
+import movementMixin from './movementMixin';
+import modalMixin from './modalMixin';
 import ConspiracyNodeMap from './ConspiracyNodeMap.vue';
 import ConspiracyNodeDocument from './ConspiracyNodeDocument.vue';
 import ConspiracyNodeMoveButton from './ConspiracyNodeMoveButton.vue';
@@ -74,13 +99,13 @@ export default {
     imgUrl() {
       let src = this.nodeData.image;
       if (src) {
-        const images = require.context('../assets/', false, /\.jpg$/)
-        src = images(`./${src}`)
+        const images = require.context('../assets/', false, /\.jpg$/);
+        src = images(`./${src}`);
       }
       return src;
     },
     children() {
-      return this.nodeData.children.map(child => ({
+      return this.nodeData.children.map((child) => ({
         id: child,
         index: this.$store.getters.getNodeIndexById(child)
       }));
@@ -104,7 +129,7 @@ export default {
     },
     updateChildren() {
       if (this.children.length) {
-        this.children.forEach(child => {
+        this.children.forEach((child) => {
           this.$store.commit('moveChildLinkPosition', {
             index: child.index,
             top: (this.$store.state.board.nodes[child.index].top + this.delta.top),
@@ -115,6 +140,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <style lang="scss" scoped>
@@ -135,7 +161,7 @@ export default {
   background-color: #f5f2d0;
   padding: 0px 10px 25px 15px;
   filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
-  
+
   .img {
     width: 150px;
     transform: rotate(-1deg);

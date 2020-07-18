@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 const movementMixin = {
   data() {
     return {
@@ -23,7 +25,7 @@ const movementMixin = {
 
       this.delta.top += e.movementY;
       this.delta.left += e.movementX;
-      
+
       if (!this.isTicking) {
         window.requestAnimationFrame(() => {
           this.moveNode();
@@ -42,6 +44,6 @@ const movementMixin = {
       // document.removeEventListener('touchend', this.endDrag);
     },
   }
-}
+};
 
-export { movementMixin };
+export { movementMixin as default };

@@ -1,12 +1,26 @@
 <template>
   <div class="hand">
-    <img class="tack" src="../assets/tack.png" alt="tack">
+    <img
+      class="tack"
+      src="../assets/tack.png"
+      alt="tack"
+    >
     <conspiracy-node-move-button
-      :showControls="showControls"
-      @drag-mouse-down="$emit('drag-mouse-down', $event)">
-    </conspiracy-node-move-button>
-    <img v-if="imgUrl" class="img" :src="imgUrl" alt="">
-    <div v-if="nodeData.title" class="title">{{ nodeData.title }}</div>
+      :show-controls="showControls"
+      @drag-mouse-down="$emit('drag-mouse-down', $event)"
+    />
+    <img
+      v-if="imgUrl"
+      class="img"
+      :src="imgUrl"
+      alt=""
+    >
+    <div
+      v-if="nodeData.title"
+      class="title"
+    >
+      {{ nodeData.title }}
+    </div>
   </div>
 </template>
 
@@ -36,8 +50,8 @@ export default {
     imgUrl() {
       let src = this.nodeData.image;
       if (src) {
-        const images = require.context('../assets/', false, /\.jpg$/)
-        src = images(`./${src}`)
+        const images = require.context('../assets/', false, /\.jpg$/);
+        src = images(`./${src}`);
       }
       return src;
     },

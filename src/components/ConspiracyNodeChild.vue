@@ -1,15 +1,24 @@
 <template>
-  <div class="pin" :style="postion" @mouseover="showControls = true" @mouseout="showControls = false">
+  <div
+    class="pin"
+    :style="postion"
+    @mouseover="showControls = true"
+    @mouseout="showControls = false"
+  >
     <conspiracy-node-move-button
-      :showControls="showControls"
-      @drag-mouse-down="dragMouseDown">
-    </conspiracy-node-move-button>
-    <img class="tack" src="../assets/tack.png" alt="tack">
+      :show-controls="showControls"
+      @drag-mouse-down="dragMouseDown"
+    />
+    <img
+      class="tack"
+      src="../assets/tack.png"
+      alt="tack"
+    >
   </div>
 </template>
 
 <script>
-import { movementMixin } from './movementMixin';
+import movementMixin from './movementMixin';
 import ConspiracyNodeMoveButton from './ConspiracyNodeMoveButton.vue';
 
 export default {

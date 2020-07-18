@@ -6,4 +6,4 @@ const modalMixin = {
   }
 };
 
-export { modalMixin };
+export { modalMixin as default };

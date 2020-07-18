@@ -16,7 +16,7 @@ const url = 'mongodb://heroku_8nl1fq6c:3i2nfdj7fia9oqk7gdp2kgfuc2@ds131814.mlab.
 // Connect to your MongoDB instance(s)
 mongoose.connect(url, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 
 // Create an Express compatible Feathers application instance.
@@ -26,7 +26,7 @@ app.use('/', express.static(path.join(__dirname, './dist')));
 // Turn on JSON parser for REST services
 app.use('/api', express.json());
 // Turn on URL-encoded parser for REST services
-app.use('/api', express.urlencoded({extended: true}));
+app.use('/api', express.urlencoded({ extended: true }));
 // Enable REST services
 app.configure(express.rest());
 // Enable Socket.io services
@@ -38,12 +38,12 @@ app.use(express.errorHandler());
 // Connect to the db, create and register a Feathers service.
 app.use('/api/users', service({
   Model: User,
-  lean: true
+  lean: true,
 }));
 
 app.use('/api/boards', service({
   Model: Board,
-  lean: true
+  lean: true,
 }));
 
 // app.service('api/boards').update('5f1235757625c1f0d3215889', {

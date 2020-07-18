@@ -1,7 +1,5 @@
 const getters = {
-  getNodeIndexById: (state) => (id) => {
-    return state.board.nodes.findIndex(node => node._id === id)
-  }
+  getNodeIndexById: (state) => (id) => state.board.nodes.findIndex((node) => node._id === id),
 };
 
-export { getters };
+export { getters as default };

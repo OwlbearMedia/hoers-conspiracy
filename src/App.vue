@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <conspiracy-board :board="board"></conspiracy-board>
+    <conspiracy-board v-if="board" :board="board" />
   </div>
 </template>
 

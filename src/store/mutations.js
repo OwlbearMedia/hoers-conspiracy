@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 const mutations = {
   moveNodeByIndex(state, payload) {
     state.board.nodes[payload.index].top = payload.top;
@@ -25,4 +27,4 @@ const mutations = {
   },
 };
 
-export { mutations };
+export { mutations as default };

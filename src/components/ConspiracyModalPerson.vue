@@ -2,39 +2,82 @@
   <div class="person-content">
     <div class="dossier main">
       <div class="section">
-        <div class="line header">File No. {{ personData.content.id }}</div>
+        <div class="line header">
+          File No. {{ personData.content.id }}
+        </div>
 
-        <div class="line">Name:</div>
-        <div class="line text">{{ personData.content.name }}</div>
+        <div class="line">
+          Name:
+        </div>
+        <div class="line text">
+          {{ personData.content.name }}
+        </div>
 
-        <div class="line">Aliases:</div>
-        <div class="line text">{{ personData.content.aliases }}</div>
+        <div class="line">
+          Aliases:
+        </div>
+        <div class="line text">
+          {{ personData.content.aliases }}
+        </div>
 
-        <div class="line">Date of Birth:</div>
-        <div class="line text">{{ personData.content.dob }}</div>
+        <div class="line">
+          Date of Birth:
+        </div>
+        <div class="line text">
+          {{ personData.content.dob }}
+        </div>
 
-        <div class="line">Place of Birth:</div>
-        <div class="line text">{{ personData.content.birthplace }}</div>
+        <div class="line">
+          Place of Birth:
+        </div>
+        <div class="line text">
+          {{ personData.content.birthplace }}
+        </div>
 
-        <div class="line">Occupation:</div>
-        <div class="line text">{{ personData.content.occupation }}</div>
+        <div class="line">
+          Occupation:
+        </div>
+        <div class="line text">
+          {{ personData.content.occupation }}
+        </div>
 
-        <div class="line last">Status:</div>
-        <div class="line text last">{{ personData.content.status }}</div>
+        <div class="line last">
+          Status:
+        </div>
+        <div class="line text last">
+          {{ personData.content.status }}
+        </div>
       </div>
       <div class="image-container">
-        <img class="main" :src="imgUrl" :alt="personData.content.name" />
-        <img v-if="imgUrl" class="tape" src="../assets/tape.png" alt="a piece of tape holding image in place" />
+        <img
+          class="main"
+          :src="imgUrl"
+          :alt="personData.content.name"
+        >
+        <img
+          v-if="imgUrl"
+          class="tape"
+          src="../assets/tape.png"
+          alt="a piece of tape holding image in place"
+        >
       </div>
     </div>
 
     <div class="dossier secondary">
       <div class="section">
-        <div class="line">Physical Description:</div>
-        <div class="line text">{{ personData.content.description }}</div>
+        <div class="line">
+          Physical Description:
+        </div>
+        <div class="line text">
+          {{ personData.content.description }}
+        </div>
 
-        <div class="line last">Notes:</div>
-        <div class="line text last">{{ personData.content.notes }}</div>
+        <div class="line last">
+          Notes:
+        </div>
+        <div class="line text last">
+          {{ personData.content.notes }}
+        </div>
       </div>
     </div>
   </div>
@@ -53,16 +96,16 @@ export default {
     imgUrl() {
       let src = this.personData.image;
       if (src) {
-        const images = require.context('../assets/', false, /\.jpg$/)
-        src = images(`./${src}`)
+        const images = require.context('../assets/', false, /\.jpg$/);
+        src = images(`./${src}`);
       }
       return src;
     },
   },
   methods: {
     getImgUrl(pet) {
-      var images = require.context('../assets/', false, /\.jpg$/)
-      return images('./' + pet + ".jpg")
+      const images = require.context('../assets/', false, /\.jpg$/);
+      return images(`./${pet}.jpg`);
     },
   },
 };
@@ -98,17 +141,17 @@ export default {
     .section {
       border: 2px solid #777;
       border-radius: 5px;
-      
+
       font-weight: bold;
       display: grid;
       grid-template-columns: 150px calc(100% - 150px);
 
       .line {
         padding: 12px;
-        border-bottom: 2px solid #666; 
+        border-bottom: 2px solid #666;
 
         &.last {
-          border-bottom: none; 
+          border-bottom: none;
         }
       }
       .text {

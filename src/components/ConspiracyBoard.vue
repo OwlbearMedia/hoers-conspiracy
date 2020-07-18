@@ -1,18 +1,22 @@
 <template>
   <div class="board">
-    <conspiracy-node v-for="(node, index) in filteredNodes" :key="`node-${index}`" :id="node._id"></conspiracy-node>
+    <conspiracy-node
+      v-for="(node, index) in filteredNodes"
+      :id="node._id"
+      :key="`node-${index}`"
+    />
     <conspiracy-node-link
       v-for="(link, index) in links"
       :key="`link-${index}`"
-      :pointA="link.pointA"
-      :pointB="link.pointB">
-    </conspiracy-node-link>
+      :point-a="link.pointA"
+      :point-b="link.pointB"
+    />
 
-    <div class="frame-top"></div>
-    <div class="frame-bottom"></div>
-    <div class="frame-left"></div>
-    <div class="frame-right"></div>
-    <conspiracy-modal></conspiracy-modal>
+    <div class="frame-top" />
+    <div class="frame-bottom" />
+    <div class="frame-left" />
+    <div class="frame-right" />
+    <conspiracy-modal />
   </div>
 </template>
 
@@ -39,10 +43,10 @@ export default {
       return this.board.nodes || [];
     },
     filteredNodes() {
-      return this.nodes.filter(node => !node.isChild);
+      return this.nodes.filter((node) => !node.isChild);
     },
     links() {
-      return this.board.links;
+      return this.board.links || [];
     },
   }
 };
@@ -50,8 +54,8 @@ export default {
 
 <style scoped>
 .frame-top, .frame-bottom, .frame-left, .frame-right {
-	background: #737e7a;
-	position: fixed;
+  background: #737e7a;
+  position: fixed;
 }
 .frame-left, .frame-right {
   top: 0; bottom: 0;
@@ -59,7 +63,7 @@ export default {
 }
 .frame-left { left: 0; }
 .frame-right { right: 0; }
-		
+
 .frame-top, .frame-bottom {
   left: 0; right: 0;
   height: 8px;

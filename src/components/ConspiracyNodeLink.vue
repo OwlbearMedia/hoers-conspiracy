@@ -1,5 +1,8 @@
 <template>
-  <div class="connection" :style="connect"></div>
+  <div
+    class="connection"
+    :style="connect"
+  />
 </template>
 
 <script>
@@ -27,48 +30,46 @@ export default {
         top: this.$store.state.board.nodes[this.pointAIndex].top,
         left: this.$store.state.board.nodes[this.pointAIndex].left,
         type: this.$store.state.board.nodes[this.pointAIndex].type,
-      }
+      };
     },
     modelB() {
       return {
         top: this.$store.state.board.nodes[this.pointBIndex].top,
         left: this.$store.state.board.nodes[this.pointBIndex].left,
         type: this.$store.state.board.nodes[this.pointBIndex].type,
-      }
+      };
     },
     offset1() {
       if (this.modelA.type === 'pin') {
         return 15;
-      } else if (this.modelA.type === 'document') {
+      } if (this.modelA.type === 'document') {
         return 175;
-      } else {
-        return 75;
       }
+      return 75;
     },
     offset2() {
       if (this.modelB.type === 'pin') {
         return 15;
-      } else if (this.modelB.type === 'document') {
+      } if (this.modelB.type === 'document') {
         return 175;
-      } else {
-        return 75;
       }
+      return 75;
     },
     connect() {
       const thickness = 4;
       // bottom right
-      var x1 = this.modelA.left + this.offset1;
-      var y1 = this.modelA.top + 10;
+      const x1 = this.modelA.left + this.offset1;
+      const y1 = this.modelA.top + 10;
       // top right
-      var x2 = this.modelB.left + this.offset2;
-      var y2 = this.modelB.top + 10;
+      const x2 = this.modelB.left + this.offset2;
+      const y2 = this.modelB.top + 10;
       // distance
-      var length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+      const length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
       // center
-      var cx = (x1 + x2) / 2 - length / 2;
-      var cy = (y1 + y2) / 2 - thickness / 2;
+      const cx = (x1 + x2) / 2 - length / 2;
+      const cy = (y1 + y2) / 2 - thickness / 2;
       // angle
-      var angle = Math.atan2(y1 - y2, x1 - x2) * (180 / Math.PI);
+      const angle = Math.atan2(y1 - y2, x1 - x2) * (180 / Math.PI);
 
       return {
         '--height': `${thickness}px`,

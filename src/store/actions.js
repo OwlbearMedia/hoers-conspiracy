@@ -11,4 +11,4 @@ const actions = {
   }
 };
 
-export { actions };
+export { actions as default };

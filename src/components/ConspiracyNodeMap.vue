@@ -1,12 +1,16 @@
 <template>
   <div class="map-content">
-    <img class="img-for-real" :src="getImgUrl(nodeData.content)" alt="">
-      <conspiracy-node-child
-        v-for="child in childNodes"
-        :key="child.id"
-        :id="child.id"
-        :index="child.index">
-      </conspiracy-node-child>
+    <img
+      class="img-for-real"
+      :src="getImgUrl(nodeData.content)"
+      alt=""
+    >
+    <conspiracy-node-child
+      v-for="child in childNodes"
+      :id="child.id"
+      :key="child.id"
+      :index="child.index"
+    />
   </div>
 </template>
 
@@ -30,8 +34,8 @@ export default {
   },
   methods: {
     getImgUrl(pet) {
-      var images = require.context('../assets/', false, /\.jpg$/)
-      return images('./' + pet + ".jpg")
+      const images = require.context('../assets/', false, /\.jpg$/);
+      return images(`./${pet}.jpg`);
     },
   },
 };
