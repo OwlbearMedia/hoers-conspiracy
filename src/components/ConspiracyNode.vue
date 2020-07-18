@@ -6,13 +6,13 @@
     @dblclick="showDialog(index)"
     @mouseover="showControls = true"
     @mouseout="showControls = false">
-    <conspiracy-node-handout
-      v-if="type === 'handout'"
+    <conspiracy-node-document
+      v-if="type === 'document'"
       :index="index"
       :node-data="nodeData"
       :show-controls="showControls"
       @drag-mouse-down="dragMouseDown">
-    </conspiracy-node-handout>
+    </conspiracy-node-document>
     <template v-else>
       <div class="header">
         <img v-if="type !== 'map'" class="tack" src="../assets/tack.png" alt="tack">
@@ -21,10 +21,10 @@
           @drag-mouse-down="dragMouseDown">
         </conspiracy-node-move-button>
       </div>
-      <div v-if="type === 'note'" class="content">{{ nodeData.content }}</div>
+      <div v-if="type === 'note'" class="content">{{ nodeData.title }}</div>
       <img v-if="imgUrl" class="img" :src="imgUrl" alt="">
       <conspiracy-node-map v-if="type === 'map'" :node-data="nodeData" :child-nodes="children"></conspiracy-node-map>
-      <div v-if="nodeData.title" class="title">{{ nodeData.title }}</div>
+      <div v-if="nodeData.title && type === 'person'" class="title">{{ nodeData.title }}</div>
     </template>
   </div>
 </template>
@@ -33,20 +33,20 @@
 import { movementMixin } from './movementMixin';
 import { modalMixin } from './modalMixin';
 import ConspiracyNodeMap from './ConspiracyNodeMap.vue';
-import ConspiracyNodeHandout from './ConspiracyNodeHandout.vue';
+import ConspiracyNodeDocument from './ConspiracyNodeDocument.vue';
 import ConspiracyNodeMoveButton from './ConspiracyNodeMoveButton.vue';
 
 export default {
   name: 'ConspiracyNode',
   components: {
     ConspiracyNodeMap,
-    ConspiracyNodeHandout,
+    ConspiracyNodeDocument,
     ConspiracyNodeMoveButton,
   },
   mixins: [movementMixin, modalMixin],
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
@@ -60,7 +60,7 @@ export default {
       return this.$store.getters.getNodeIndexById(this.id);
     },
     nodeData() {
-      return this.$store.state.nodes[this.index];
+      return this.$store.state.board.nodes[this.index];
     },
     type() {
       return this.nodeData.type;
@@ -107,8 +107,8 @@ export default {
         this.children.forEach(child => {
           this.$store.commit('moveChildLinkPosition', {
             index: child.index,
-            top: (this.$store.state.nodes[child.index].top + this.delta.top),
-            left: (this.$store.state.nodes[child.index].left + this.delta.left),
+            top: (this.$store.state.board.nodes[child.index].top + this.delta.top),
+            left: (this.$store.state.board.nodes[child.index].left + this.delta.left),
           });
         });
       }

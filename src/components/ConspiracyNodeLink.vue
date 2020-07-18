@@ -7,46 +7,48 @@ export default {
   name: 'ConspiracyNodeLink',
   props: {
     pointA: {
-      type: Object,
+      type: String,
       required: true
     },
     pointB: {
-      type: Object,
+      type: String,
       required: true
-    }
+    },
   },
   computed: {
     pointAIndex() {
-      return this.$store.getters.getNodeIndexById(this.pointA.id);
+      return this.$store.getters.getNodeIndexById(this.pointA);
     },
     pointBIndex() {
-      return this.$store.getters.getNodeIndexById(this.pointB.id);
+      return this.$store.getters.getNodeIndexById(this.pointB);
     },
-    off1() {
+    modelA() {
       return {
-        top: this.$store.state.nodes[this.pointAIndex].top,
-        left: this.$store.state.nodes[this.pointAIndex].left,
+        top: this.$store.state.board.nodes[this.pointAIndex].top,
+        left: this.$store.state.board.nodes[this.pointAIndex].left,
+        type: this.$store.state.board.nodes[this.pointAIndex].type,
       }
     },
-    off2() {
+    modelB() {
       return {
-        top: this.$store.state.nodes[this.pointBIndex].top,
-        left: this.$store.state.nodes[this.pointBIndex].left,
+        top: this.$store.state.board.nodes[this.pointBIndex].top,
+        left: this.$store.state.board.nodes[this.pointBIndex].left,
+        type: this.$store.state.board.nodes[this.pointBIndex].type,
       }
     },
     offset1() {
-      if (this.pointA.type === 'pin') {
+      if (this.modelA.type === 'pin') {
         return 15;
-      } else if (this.pointA.type === 'handout') {
+      } else if (this.modelA.type === 'document') {
         return 175;
       } else {
         return 75;
       }
     },
     offset2() {
-      if (this.pointB.type === 'pin') {
+      if (this.modelB.type === 'pin') {
         return 15;
-      } else if (this.pointB.type === 'handout') {
+      } else if (this.modelB.type === 'document') {
         return 175;
       } else {
         return 75;
@@ -55,11 +57,11 @@ export default {
     connect() {
       const thickness = 4;
       // bottom right
-      var x1 = this.off1.left + this.offset1;
-      var y1 = this.off1.top + 10;
+      var x1 = this.modelA.left + this.offset1;
+      var y1 = this.modelA.top + 10;
       // top right
-      var x2 = this.off2.left + this.offset2;
-      var y2 = this.off2.top + 10;
+      var x2 = this.modelB.left + this.offset2;
+      var y2 = this.modelB.top + 10;
       // distance
       var length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
       // center

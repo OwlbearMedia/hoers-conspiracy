@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <conspiracy-board></conspiracy-board>
+    <conspiracy-board :board="board"></conspiracy-board>
   </div>
 </template>
 
@@ -11,7 +11,15 @@ export default {
   name: 'App',
   components: {
     ConspiracyBoard
-  }
+  },
+  computed: {
+    board() {
+      return this.$store.state.board;
+    }
+  },
+  created() {
+    this.$store.dispatch('getBoard');
+  },
 };
 </script>
 

@@ -38,7 +38,7 @@ export default {
       return this.$store.state.currentDialog;
     },
     nodeData() {
-      return this.$store.state.nodes[this.currentDialog];
+      return this.$store.state.board.nodes[this.currentDialog];
     },
     position() {
       return {

@@ -20,7 +20,7 @@ export default {
   mixins: [movementMixin],
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true,
     },
     index: {
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     nodeData() {
-      return this.$store.state.nodes[this.index];
+      return this.$store.state.board.nodes[this.index];
     },
     postion() {
       return {

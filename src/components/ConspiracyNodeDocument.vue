@@ -14,7 +14,7 @@
 import ConspiracyNodeMoveButton from './ConspiracyNodeMoveButton.vue';
 
 export default {
-  name: 'ConspiracyNodeHandout',
+  name: 'ConspiracyNodeDocument',
   components: {
     ConspiracyNodeMoveButton,
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <conspiracy-node v-for="(node, index) in filteredNodes" :key="`node-${index}`" :id="node.id"></conspiracy-node>
+    <conspiracy-node v-for="(node, index) in filteredNodes" :key="`node-${index}`" :id="node._id"></conspiracy-node>
     <conspiracy-node-link
       v-for="(link, index) in links"
       :key="`link-${index}`"
@@ -28,15 +28,21 @@ export default {
     ConspiracyNode,
     ConspiracyNodeLink,
   },
+  props: {
+    board: {
+      type: Object,
+      required: true,
+    },
+  },
   computed: {
     nodes() {
-      return this.$store.state.nodes;
+      return this.board.nodes || [];
     },
     filteredNodes() {
       return this.nodes.filter(node => !node.isChild);
     },
     links() {
-      return this.$store.state.links;
+      return this.board.links;
     },
   }
 };

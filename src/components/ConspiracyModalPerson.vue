@@ -24,6 +24,7 @@
       </div>
       <div class="image-container">
         <img class="main" :src="imgUrl" :alt="personData.content.name" />
+        <img v-if="imgUrl" class="tape" src="../assets/tape.png" alt="a piece of tape holding image in place" />
       </div>
     </div>
 
@@ -68,13 +69,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .paperclip {
-//   position: absolute;
-//   top: -8px;
-//   width: 50px;
-//   right: 60px;
-//   z-index: 10
-// }
+.tape {
+  position: absolute;
+  top: -40px;
+  width: 250px;
+  right: 16px;
+  transform: rotate(-8deg);
+  z-index: 9;
+}
 
 .person-content {
   text-align: left;
