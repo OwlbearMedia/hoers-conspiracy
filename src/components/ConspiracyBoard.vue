@@ -3,6 +3,7 @@
     <conspiracy-node
       v-for="(node, index) in filteredNodes"
       :id="node._id"
+      :socket="socket"
       :key="`node-${index}`"
     />
     <conspiracy-node-link
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+import io from 'socket.io-client';
 import ConspiracyModal from './ConspiracyModal.vue';
 import ConspiracyNode from './ConspiracyNode.vue';
 import ConspiracyNodeLink from './ConspiracyNodeLink.vue';
@@ -38,6 +40,14 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      socket: io('/'),
+    };
+  },
+  created() {
+    this.handleMovedNode();
+  },
   computed: {
     nodes() {
       return this.board.nodes || [];
@@ -48,7 +58,17 @@ export default {
     links() {
       return this.board.links || [];
     },
-  }
+  },
+  methods: {
+    handleMovedNode() {
+      this.socket.on('nodeMoved', (data) => {
+        this.moveNode(data);
+      });
+    },
+    moveNode(payload) {
+      this.$store.commit('moveNodeByIndex', payload);
+    }
+  },
 };
 </script>
 

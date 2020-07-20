@@ -74,6 +74,10 @@ export default {
       type: String,
       required: true,
     },
+    socket: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
@@ -119,12 +123,14 @@ export default {
   },
   methods: {
     moveNode() {
-      this.$store.commit('moveNodeByIndex', {
+      const payload = {
         index: this.index,
         top: (this.$el.offsetTop + this.delta.top),
         left: (this.$el.offsetLeft + this.delta.left),
-      });
+      };
 
+      this.$store.commit('moveNodeByIndex', payload);
+      this.socket.emit('moveNode', payload);
       this.updateChildren();
     },
     updateChildren() {

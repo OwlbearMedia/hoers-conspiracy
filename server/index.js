@@ -1,20 +1,17 @@
+require('dotenv').config();
 const path = require('path');
 const feathers = require('@feathersjs/feathers');
 const express = require('@feathersjs/express');
-// const socketio = require('@feathersjs/socketio');
+const socketio = require('@feathersjs/socketio');
 const mongoose = require('mongoose');
 const service = require('feathers-mongoose');
-const User = require('./server/UserModel');
-const Board = require('./server/ConspiracyBoardModel');
+const User = require('./UserModel');
+const Board = require('./ConspiracyBoardModel');
 
 mongoose.Promise = global.Promise;
 
-// Connection URL
-// @todo: move username and password to config file
-const url = 'mongodb://heroku_8nl1fq6c:3i2nfdj7fia9oqk7gdp2kgfuc2@ds131814.mlab.com:31814/heroku_8nl1fq6c';
-
 // Connect to your MongoDB instance(s)
-mongoose.connect(url, {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -22,17 +19,24 @@ mongoose.connect(url, {
 // Create an Express compatible Feathers application instance.
 const app = express(feathers());
 // Serve the app
-app.use('/', express.static(path.join(__dirname, './dist')));
+app.use('/', express.static(path.join(__dirname, '../dist')));
 // Turn on JSON parser for REST services
 app.use('/api', express.json());
 // Turn on URL-encoded parser for REST services
 app.use('/api', express.urlencoded({ extended: true }));
 // Enable REST services
 app.configure(express.rest());
-// Enable Socket.io services
-// app.configure(socketio());
 // Handle errors
 app.use(express.errorHandler());
+
+// Enable Socket.io services
+app.configure(socketio((io) => {
+  io.on('connection', (socket) => {
+    socket.on('moveNode', (data) => {
+      socket.broadcast.emit('nodeMoved', data);
+    });
+  });
+}));
 
 // API
 // Connect to the db, create and register a Feathers service.
