@@ -136,11 +136,14 @@ export default {
     updateChildren() {
       if (this.children.length) {
         this.children.forEach((child) => {
-          this.$store.commit('moveChildLinkPosition', {
+          const payload = {
             index: child.index,
             top: (this.$store.state.board.nodes[child.index].top + this.delta.top),
             left: (this.$store.state.board.nodes[child.index].left + this.delta.left),
-          });
+          };
+
+          this.socket.emit('moveChildNode', payload);
+          this.$store.commit('moveChildLinkPosition', payload);
         });
       }
     },

@@ -61,13 +61,15 @@ export default {
   },
   methods: {
     handleMovedNode() {
-      this.socket.on('nodeMoved', (data) => {
-        this.moveNode(data);
-      });
+      this.socket.on('nodeMoved', this.moveNode);
+      this.socket.on('childNodeMoved', this.moveChildNode);
     },
     moveNode(payload) {
       this.$store.commit('moveNodeByIndex', payload);
-    }
+    },
+    moveChildNode(payload) {
+      this.$store.commit('moveChildLinkPosition', payload);
+    },
   },
 };
 </script>

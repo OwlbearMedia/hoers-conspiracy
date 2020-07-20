@@ -12,6 +12,7 @@ mongoose.Promise = global.Promise;
 
 // Connect to your MongoDB instance(s)
 mongoose.connect(process.env.MONGODB_URI, {
+  useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -34,6 +35,9 @@ app.configure(socketio((io) => {
   io.on('connection', (socket) => {
     socket.on('moveNode', (data) => {
       socket.broadcast.emit('nodeMoved', data);
+    });
+    socket.on('moveChildNode', (data) => {
+      socket.broadcast.emit('childNodeMoved', data);
     });
   });
 }));
