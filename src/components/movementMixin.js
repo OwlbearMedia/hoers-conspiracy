@@ -40,6 +40,7 @@ const movementMixin = {
     endDrag() {
       document.removeEventListener('mousemove', this.elementDrag);
       document.removeEventListener('mouseup', this.endDrag);
+      this.$store.dispatch('updateBoard');
       // document.removeEventListener('touchmove', this.elementDrag);
       // document.removeEventListener('touchend', this.endDrag);
     },

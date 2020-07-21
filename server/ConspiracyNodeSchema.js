@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const conspiracyNodeSchema = new Schema({
   top: {
@@ -23,7 +24,5 @@ const conspiracyNodeSchema = new Schema({
   children: [{ type: Schema.Types.ObjectId, ref: 'ConspiracyNode' }],
   parent: { type: Schema.Types.ObjectId, ref: 'ConspiracyNode' }
 });
-
-const ConspiracyNode = mongoose.model('ConspiracyNode', conspiracyNodeSchema);
 
 module.exports = conspiracyNodeSchema;

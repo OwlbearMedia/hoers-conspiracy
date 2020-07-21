@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const conspiracyLinkSchema = new Schema({
   pointA: {
@@ -14,7 +15,5 @@ const conspiracyLinkSchema = new Schema({
   },
   description: String,
 });
-
-const ConspiracyLink = mongoose.model('ConspiracyLink', conspiracyLinkSchema);
 
 module.exports = conspiracyLinkSchema;

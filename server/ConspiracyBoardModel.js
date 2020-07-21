@@ -1,7 +1,8 @@
+const mongoose = require('mongoose');
 const ConspiracyLink = require('./ConspiracyLinkModel');
 const ConspiracyNode = require('./ConspiracyNodeModel');
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const conspiracyBoardSchema = new Schema({
   nodes: [ConspiracyNode],

@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import Vue from 'vue';
 
 const mutations = {
   moveNodeByIndex(state, payload) {
@@ -23,7 +24,7 @@ const mutations = {
     state.isDialogShown = false;
   },
   setBoard(state, payload) {
-    state.board = payload;
+    Vue.set(state, 'board', payload);
   },
 };
 
