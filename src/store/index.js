@@ -8,6 +8,11 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    newLink: {
+      isLinking: false,
+      pointA: null,
+      pointB: null,
+    },
     isDialogShown: false,
     currentDialog: 0,
     board: null,

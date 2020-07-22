@@ -18,21 +18,24 @@
     <div class="frame-left" />
     <div class="frame-right" />
     <conspiracy-modal />
+    <conspiracy-board-menu />
   </div>
 </template>
 
 <script>
 import io from 'socket.io-client';
-import ConspiracyModal from './ConspiracyModal.vue';
 import ConspiracyNode from './ConspiracyNode.vue';
+import ConspiracyModal from './ConspiracyModal.vue';
 import ConspiracyNodeLink from './ConspiracyNodeLink.vue';
+import ConspiracyBoardMenu from './ConspiracyBoardMenu.vue';
 
 export default {
   name: 'ConspiracyBoard',
   components: {
-    ConspiracyModal,
     ConspiracyNode,
+    ConspiracyModal,
     ConspiracyNodeLink,
+    ConspiracyBoardMenu,
   },
   props: {
     board: {

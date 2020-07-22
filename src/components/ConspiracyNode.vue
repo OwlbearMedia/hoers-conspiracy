@@ -1,56 +1,59 @@
 <template>
-  <div
-    class="node"
-    :class="type"
-    :style="stylePostion"
-    @dblclick="showDialog(index)"
-    @mouseover="showControls = true"
-    @mouseout="showControls = false"
-  >
-    <conspiracy-node-document
-      v-if="type === 'document'"
-      :index="index"
-      :node-data="nodeData"
-      :show-controls="showControls"
-      @drag-mouse-down="dragMouseDown"
-    />
-    <template v-else>
-      <div class="header">
-        <img
-          v-if="type !== 'map'"
-          class="tack"
-          src="../assets/tack.png"
-          alt="tack"
-        >
-        <conspiracy-node-move-button
-          :show-controls="showControls"
-          @drag-mouse-down="dragMouseDown"
-        />
-      </div>
-      <div
-        v-if="type === 'note'"
-        class="content"
-      >
-        {{ nodeData.title }}
-      </div>
-      <img
-        v-if="imgUrl"
-        class="img"
-        :src="imgUrl"
-        alt=""
-      >
-      <conspiracy-node-map
-        v-if="type === 'map'"
+  <div :style="stylePostion" class="node-container">
+    <div v-if="isLinking && type !== 'map'" class="link" :class="cssClass"></div>
+    <div
+      class="node"
+      :class="cssClass"
+      @click="createLink"
+      @dblclick="showDialog(index)"
+      @mouseover="showControls = true"
+      @mouseout="showControls = false"
+    >
+      <conspiracy-node-document
+        v-if="type === 'document'"
+        :index="index"
         :node-data="nodeData"
-        :child-nodes="children"
+        :show-controls="showControls"
+        @drag-mouse-down="dragMouseDown"
       />
-      <div
-        v-if="nodeData.title && type === 'person'"
-        class="title"
-      >
-        {{ nodeData.title }}
-      </div>
-    </template>
+      <template v-else>
+        <div class="header">
+          <img
+            v-if="type !== 'map'"
+            class="tack"
+            src="../assets/tack.png"
+            alt="tack"
+          >
+          <conspiracy-node-move-button
+            :show-controls="showControls"
+            @drag-mouse-down="dragMouseDown"
+          />
+        </div>
+        <div
+          v-if="type === 'note'"
+          class="content"
+        >
+          {{ nodeData.title }}
+        </div>
+        <img
+          v-if="imgUrl"
+          class="img"
+          :src="imgUrl"
+          alt=""
+        >
+        <conspiracy-node-map
+          v-if="type === 'map'"
+          :node-data="nodeData"
+          :child-nodes="children"
+        />
+        <div
+          v-if="nodeData.title && type === 'person'"
+          class="title"
+        >
+          {{ nodeData.title }}
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -120,8 +123,30 @@ export default {
         '--left': `${this.left}px`,
       };
     },
+    isLinking() {
+      return this.$store.state.newLink.isLinking;
+    },
+    isLinked() {
+      return this.$store.state.newLink.pointA === this.id;
+    },
+    cssClass() {
+      return {
+        linked: this.isLinked,
+        linking: this.isLinking,
+        map: this.type === 'map',
+        note: this.type === 'note',
+        person: this.type === 'person',
+        document: this.type === 'document',
+      };
+    },
   },
   methods: {
+    createLink() {
+      if (this.isLinking) {
+        if (!this.$store.state.newLink.pointA) this.$store.commit('setPointA', this.id);
+        else if (!this.$store.state.newLink.pointB) this.$store.commit('setPointB', this.id);
+      }
+    },
     moveNode() {
       const payload = {
         index: this.index,
@@ -153,28 +178,74 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.link {
+  position: absolute;
+  top: calc(var(--top) - 5px);
+  left: calc(var(--left) - 5px);
+  width: 160px;
+  height: 160px;
+  background-color: dodgerblue;
+  opacity: .75;
+
+  &.person {
+    width: 185px;
+    height: 252.53px;
+  }
+
+  &.document {
+    width: 360px;
+    height: 237px;
+    transform: rotate(3deg);
+  }
+
+  &.linked {
+    background-color: red;
+  }
+}
+
 .node {
   position: absolute;
   top: var(--top);
   left: var(--left);
   filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
+
+  &.linking {
+    cursor: pointer;
+  }
+
+  &.note {
+    position: absolute;
+    top: var(--top);
+    left: var(--left);
+    background-color: #FDF799;
+    width: 150px;
+    height: 150px;
+    display: grid;
+    grid-template-rows: 20% 80%;
+
+    .content {
+      padding: 5px 20px 20px 20px;
+      font-family: ShadowsIntoLight, Avenir, Helvetica, Arial, sans-serif;
+      font-size: 20px;
+    }
+  }
+
+  &.person {
+    background-color: #f5f2d0;
+    padding: 0px 10px 25px 15px;
+    filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
+
+    .img {
+      width: 150px;
+      transform: rotate(-1deg);
+    }
+  }
 }
 
 .header {
   text-align: right;
   padding: 5px;
   height: 20px;
-}
-
-.person {
-  background-color: #f5f2d0;
-  padding: 0px 10px 25px 15px;
-  filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
-
-  .img {
-    width: 150px;
-    transform: rotate(-1deg);
-  }
 }
 
 .title {
@@ -188,23 +259,6 @@ export default {
   height: 30px;
   right: 25px;
   transform: rotate(1deg);
-}
-
-.note {
-  position: absolute;
-  top: var(--top);
-  left: var(--left);
-  background-color: #FDF799;
-  width: 150px;
-  height: 150px;
-  display: grid;
-  grid-template-rows: 20% 80%;
-
-  .content {
-    padding: 5px 20px 20px 20px;
-    font-family: ShadowsIntoLight, Avenir, Helvetica, Arial, sans-serif;
-    font-size: 20px;
-  }
 }
 
 .tack {

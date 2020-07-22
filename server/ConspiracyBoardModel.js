@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const ConspiracyLink = require('./ConspiracyLinkModel');
-const ConspiracyNode = require('./ConspiracyNodeModel');
+const ConspiracyLink = require('./ConspiracyLinkSchema');
+const ConspiracyNode = require('./ConspiracyNodeSchema');
 
 const { Schema } = mongoose;
 

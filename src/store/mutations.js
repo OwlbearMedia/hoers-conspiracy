@@ -26,6 +26,21 @@ const mutations = {
   setBoard(state, payload) {
     Vue.set(state, 'board', payload);
   },
+  isLinking(state, payload) {
+    state.newLink.isLinking = payload;
+  },
+  setPointA(state, payload) {
+    state.newLink.pointA = payload;
+  },
+  setPointB(state, payload) {
+    state.newLink.pointB = payload;
+  },
+  createLink(state, payload) {
+    state.board.links.push(payload);
+    state.newLink.pointA = null;
+    state.newLink.pointB = null;
+    state.newLink.isLinking = false;
+  }
 };
 
 export { mutations as default };
