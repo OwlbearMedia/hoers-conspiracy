@@ -1,19 +1,29 @@
 <template>
   <div
-    class="pin"
     :style="postion"
-    @mouseover="showControls = true"
-    @mouseout="showControls = false"
+    class="node-container"
+    @click="createLink"
   >
-    <conspiracy-node-move-button
-      :show-controls="showControls"
-      @drag-mouse-down="dragMouseDown"
-    />
-    <img
-      class="tack"
-      src="../assets/tack.png"
-      alt="tack"
+    <div
+      v-if="isLinking"
+      class="link"
+    ></div>
+    <div
+      class="pin"
+      @mouseover="showControls = true"
+      @mouseout="showControls = false"
     >
+      <conspiracy-node-move-button
+        v-if="!isLinking"
+        :show-controls="showControls"
+        @drag-mouse-down="dragMouseDown"
+      />
+      <img
+        class="tack"
+        src="../assets/tack.png"
+        alt="tack"
+      >
+    </div>
   </div>
 </template>
 
@@ -52,8 +62,20 @@ export default {
         '--left': `${this.nodeData.localLeft}px`,
       };
     },
+    isLinking() {
+      return this.$store.state.newLink.isLinking;
+    },
+    isLinked() {
+      return this.$store.state.newLink.pointA === this.id;
+    },
   },
   methods: {
+    createLink() {
+      if (this.isLinking) {
+        if (!this.$store.state.newLink.pointA) this.$store.commit('setPointA', this.id);
+        else if (!this.$store.state.newLink.pointB) this.$store.commit('setPointB', this.id);
+      }
+    },
     moveNode() {
       this.$store.commit('moveChild', {
         index: this.index,
@@ -68,6 +90,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.link {
+  position: absolute;
+  top: calc(var(--top) - 5px);
+  left: calc(var(--left) + 5px);
+  width: 30px;
+  height: 30px;
+  background-color: dodgerblue;
+  opacity: .75;
+
+  &.linked {
+    background-color: red;
+  }
+}
+
 .pin {
   position: absolute;
   top: var(--top);

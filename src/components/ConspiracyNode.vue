@@ -142,7 +142,7 @@ export default {
   },
   methods: {
     createLink() {
-      if (this.isLinking) {
+      if (this.isLinking && this.type !== 'map') {
         if (!this.$store.state.newLink.pointA) this.$store.commit('setPointA', this.id);
         else if (!this.$store.state.newLink.pointB) this.$store.commit('setPointB', this.id);
       }
@@ -178,66 +178,66 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.link {
-  position: absolute;
-  top: calc(var(--top) - 5px);
-  left: calc(var(--left) - 5px);
-  width: 160px;
-  height: 160px;
-  background-color: dodgerblue;
-  opacity: .75;
-
-  &.person {
-    width: 185px;
-    height: 252.53px;
-  }
-
-  &.document {
-    width: 360px;
-    height: 237px;
-    transform: rotate(3deg);
-  }
-
-  &.linked {
-    background-color: red;
-  }
-}
-
-.node {
+.node-container {
   position: absolute;
   top: var(--top);
   left: var(--left);
-  filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
 
-  &.linking {
-    cursor: pointer;
-  }
-
-  &.note {
+  .link {
     position: absolute;
-    top: var(--top);
-    left: var(--left);
-    background-color: #FDF799;
-    width: 150px;
-    height: 150px;
-    display: grid;
-    grid-template-rows: 20% 80%;
+    top: -5px;
+    left: -5px;
+    width: 160px;
+    height: 160px;
+    background-color: dodgerblue;
+    opacity: .75;
 
-    .content {
-      padding: 5px 20px 20px 20px;
-      font-family: ShadowsIntoLight, Avenir, Helvetica, Arial, sans-serif;
-      font-size: 20px;
+    &.person {
+      width: 185px;
+      height: 252.53px;
+    }
+
+    &.document {
+      width: 360px;
+      height: 237px;
+      transform: rotate(3deg);
+    }
+
+    &.linked {
+      background-color: red;
     }
   }
 
-  &.person {
-    background-color: #f5f2d0;
-    padding: 0px 10px 25px 15px;
+  .node {
     filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
 
-    .img {
+    &.linking {
+      cursor: pointer;
+    }
+
+    &.note {
+      background-color: #FDF799;
       width: 150px;
-      transform: rotate(-1deg);
+      height: 150px;
+      display: grid;
+      grid-template-rows: 20% 80%;
+
+      .content {
+        padding: 5px 20px 20px 20px;
+        font-family: ShadowsIntoLight, Avenir, Helvetica, Arial, sans-serif;
+        font-size: 20px;
+      }
+    }
+
+    &.person {
+      background-color: #f5f2d0;
+      padding: 0px 10px 25px 15px;
+      filter: drop-shadow(3px 3px 3px rgb(0, 0, 0, 0.6));
+
+      .img {
+        width: 150px;
+        transform: rotate(-1deg);
+      }
     }
   }
 }
