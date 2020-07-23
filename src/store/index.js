@@ -8,8 +8,9 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    isAntiLinking: false,
+    isLinking: false,
     newLink: {
-      isLinking: false,
       pointA: null,
       pointB: null,
     },

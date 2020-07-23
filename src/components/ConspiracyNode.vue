@@ -124,7 +124,7 @@ export default {
       };
     },
     isLinking() {
-      return this.$store.state.newLink.isLinking;
+      return this.$store.state.isLinking;
     },
     isLinked() {
       return this.$store.state.newLink.pointA === this.id;

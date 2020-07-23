@@ -1,7 +1,9 @@
 <template>
   <div
     class="connection"
+    :class="{ highlight: isAntiLinking }"
     :style="connect"
+    @click="removeLink"
   />
 </template>
 
@@ -9,6 +11,10 @@
 export default {
   name: 'ConspiracyNodeLink',
   props: {
+    id: {
+      type: String,
+      required: true
+    },
     pointA: {
       type: String,
       required: true
@@ -19,6 +25,12 @@ export default {
     },
   },
   computed: {
+    isAntiLinking() {
+      return this.$store.state.isAntiLinking;
+    },
+    index() {
+      return this.$store.getters.getLinkIndexById(this.id);
+    },
     pointAIndex() {
       return this.$store.getters.getNodeIndexById(this.pointA);
     },
@@ -78,12 +90,17 @@ export default {
         '--width': `${length}px`,
         '--rotation': `rotate(${angle}deg)`,
       };
+    },
+  },
+  methods: {
+    removeLink() {
+      if (this.isAntiLinking) this.$store.commit('removeLink', this.index);
     }
-  }
+  },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .connection {
   padding: 0;
   margin: 0;
@@ -98,5 +115,10 @@ export default {
   top: var(--top);
   width: var(--width);
   transform: var(--rotation);
+
+  &.highlight {
+    border: 2px solid dodgerblue;
+    cursor: pointer;
+  }
 }
 </style>

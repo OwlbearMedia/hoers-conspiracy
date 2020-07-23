@@ -83,8 +83,7 @@ export default {
       this.$store.commit('isLinking', true);
     },
     removeLink() {
-      // this.$store.commit('isLinking', true);
-      console.log('One day this will work');
+      this.$store.commit('isAntiLinking', true);
     },
   },
   watch: {

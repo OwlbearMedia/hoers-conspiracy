@@ -27,7 +27,10 @@ const mutations = {
     Vue.set(state, 'board', payload);
   },
   isLinking(state, payload) {
-    state.newLink.isLinking = payload;
+    state.isLinking = payload;
+  },
+  isAntiLinking(state, payload) {
+    state.isAntiLinking = payload;
   },
   setPointA(state, payload) {
     state.newLink.pointA = payload;
@@ -39,8 +42,12 @@ const mutations = {
     state.board.links.push(payload);
     state.newLink.pointA = null;
     state.newLink.pointB = null;
-    state.newLink.isLinking = false;
-  }
+    state.isLinking = false;
+  },
+  removeLink(state, index) {
+    state.board.links.splice(index, 1);
+    state.isAntiLinking = false;
+  },
 };
 
 export { mutations as default };

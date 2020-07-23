@@ -1,5 +1,8 @@
 <template>
-  <div class="board">
+  <div
+    class="board"
+    @contextmenu="stopDoingThings"
+  >
     <conspiracy-node
       v-for="(node, index) in filteredNodes"
       :id="node._id"
@@ -9,6 +12,7 @@
     <conspiracy-node-link
       v-for="(link, index) in links"
       :key="`link-${index}`"
+      :id="link._id"
       :point-a="link.pointA"
       :point-b="link.pointB"
     />
@@ -72,6 +76,13 @@ export default {
     },
     moveChildNode(payload) {
       this.$store.commit('moveChildLinkPosition', payload);
+    },
+    stopDoingThings($event) {
+      if (this.$store.state.isLinking || this.$store.state.isAntiLinking) {
+        $event.preventDefault();
+        this.$store.commit('isLinking', false);
+        this.$store.commit('isAntiLinking', false);
+      }
     },
   },
 };
