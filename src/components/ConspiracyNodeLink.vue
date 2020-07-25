@@ -77,16 +77,16 @@ export default {
       const y2 = this.modelB.top + 10;
       // distance
       const length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-      // center
-      const cx = (x1 + x2) / 2 - length / 2;
-      const cy = (y1 + y2) / 2 - thickness / 2;
+      // position
+      const left = (x1 + x2) / 2 - length / 2;
+      const top = (y1 + y2) / 2 - thickness / 2;
       // angle
       const angle = Math.atan2(y1 - y2, x1 - x2) * (180 / Math.PI);
 
       return {
         '--height': `${thickness}px`,
-        '--left': `${cx}px`,
-        '--top': `${cy}px`,
+        '--left': `${left}px`,
+        '--top': `${top}px`,
         '--width': `${length}px`,
         '--rotation': `rotate(${angle}deg)`,
       };

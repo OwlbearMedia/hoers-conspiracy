@@ -1,5 +1,5 @@
 <template>
-  <div id="dummy" class="menu">
+  <div ref="menu" class="menu">
     <button @click="toggleMenu">
       <svg
         v-if="!isMenuExpanded"
@@ -60,6 +60,12 @@ export default {
   data() {
     return {
       isMenuExpanded: false,
+      menu: {
+        expandedWidth: 200,
+        expandedHeight: 831,
+        collapsedWidth: 42,
+        collapsedHeight: 37,
+      }
     };
   },
   computed: {
@@ -73,9 +79,15 @@ export default {
   methods: {
     toggleMenu() {
       if (this.isMenuExpanded) {
-        Velocity(document.getElementById('dummy'), { width: 42, height: 37 }, { duration: 250 });
+        Velocity(this.$refs.menu, {
+          width: this.menu.collapsedWidth,
+          height: this.menu.collapsedHeight
+        }, { duration: 250 });
       } else {
-        Velocity(document.getElementById('dummy'), { width: 200, height: 831 }, { duration: 250 });
+        Velocity(this.$refs.menu, {
+          width: this.menu.expandedWidth,
+          height: this.menu.expandedHeight
+        }, { duration: 250 });
       }
       this.isMenuExpanded = !this.isMenuExpanded;
     },
@@ -122,6 +134,7 @@ export default {
   .menu-content {
     padding: 5px 10px;
     margin-top: 15px;
+    width: 180px;
 
     .section {
       padding: 10px 0;
