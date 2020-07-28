@@ -6,15 +6,18 @@
     :style="position"
   >
     <div class="header">
-      <button @click="addLink">
-        <!-- <svg
+      <button
+        class="edit"
+        @click="edit"
+      >
+        <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           role="presentation"
           class="cdr-icon_4.0.0 cdr-icon--large_4.0.0"
         >
-          <path d="M11 11H6a1 1 0 000 2h5v5a1 1 0 002 0v-5h5a1 1 0 000-2h-5V6a1 1 0 00-2 0v5z"></path>
-        </svg> -->
+          <path d="M18.196 3.59l2.174 2.188c.74.745.78 1.93.117 2.72l-.124.136-11.4 11.359-4.741 1.004a1.054 1.054 0 01-1.22-1.092l.012-.122.944-4.827L15.37 3.583a1.993 1.993 0 012.825.007zm-4.488 4.484l-7.905 7.878-.54 2.765 2.71-.575 7.91-7.881-2.175-2.187zm3.072-3.06l-1.649 1.643 2.176 2.186 1.647-1.64-2.174-2.188z"></path>
+        </svg>
       </button>
       <button @click="closeDialog">
         <svg
@@ -31,6 +34,7 @@
     <div class="content">
       <conspiracy-modal-person
         v-if="nodeData.type === 'person'"
+        :edit-mode="editMode"
         :person-data="nodeData"
       />
     </div>
@@ -52,6 +56,7 @@ export default {
       left: 0,
       width: 900,
       height: 85,
+      editMode: false,
       backgroundPosition: 0,
     };
   },
@@ -90,8 +95,8 @@ export default {
     closeDialog() {
       this.$store.commit('closeDialog');
     },
-    addLink() {
-      console.log('lik=nk==');
+    edit() {
+      this.editMode = true;
     },
   },
 };
@@ -131,6 +136,15 @@ export default {
       svg {
         fill: antiquewhite;
         width: 39px;
+      }
+    }
+
+    .edit {
+      float: left;
+      width: 36px;
+
+      svg {
+        width: 35px;
       }
     }
   }

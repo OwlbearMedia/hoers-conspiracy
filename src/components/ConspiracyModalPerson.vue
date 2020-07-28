@@ -3,56 +3,62 @@
     <div class="dossier main">
       <div class="section">
         <div class="line header">
-          File No. {{ personData.content.id }}
+          File No. {{ model.id }}
         </div>
 
         <div class="line">
           Name:
         </div>
-        <div class="line text">
-          {{ personData.content.name }}
+        <div class="line text" :class="{ 'edit-mode': editMode }">
+          <span v-if="!editMode">{{ model.name }}</span>
+          <input v-if="editMode" v-model="model.name" type="text" />
         </div>
 
         <div class="line">
           Aliases:
         </div>
-        <div class="line text">
-          {{ personData.content.aliases }}
+        <div class="line text" :class="{ 'edit-mode': editMode }">
+          <span v-if="!editMode">{{ model.aliases }}</span>
+          <input v-if="editMode" v-model="model.aliases" type="text" />
         </div>
 
         <div class="line">
           Date of Birth:
         </div>
-        <div class="line text">
-          {{ personData.content.dob }}
+        <div class="line text" :class="{ 'edit-mode': editMode }">
+          <span v-if="!editMode">{{ model.dob }}</span>
+          <input v-if="editMode" v-model="model.dob" type="text" />
         </div>
 
         <div class="line">
           Place of Birth:
         </div>
-        <div class="line text">
-          {{ personData.content.birthplace }}
+        <div class="line text" :class="{ 'edit-mode': editMode }">
+          <span v-if="!editMode">{{ model.birthplace }}</span>
+          <input v-if="editMode" v-model="model.birthplace" type="text" />
         </div>
 
         <div class="line">
           Occupation:
         </div>
-        <div class="line text">
-          {{ personData.content.occupation }}
+        <div class="line text" :class="{ 'edit-mode': editMode }">
+          <span v-if="!editMode">{{ model.occupation }}</span>
+          <input v-if="editMode" v-model="model.occupation" type="text" />
         </div>
 
         <div class="line last">
           Status:
         </div>
-        <div class="line text last">
-          {{ personData.content.status }}
+        <div class="line text last" :class="{ 'edit-mode': editMode }">
+          <span v-if="!editMode">{{ model.status }}</span>
+          <input v-if="editMode" v-model="model.status" type="text" />
         </div>
       </div>
       <div class="image-container">
         <img
           class="main"
           :src="imgUrl"
-          :alt="personData.content.name"
+          :alt="model.name"
         >
         <img
           v-if="imgUrl"
@@ -69,14 +75,14 @@
           Physical Description:
         </div>
         <div class="line text">
-          {{ personData.content.description }}
+          {{ model.description }}
         </div>
 
         <div class="line last">
           Notes:
         </div>
         <div class="line text last">
-          {{ personData.content.notes }}
+          {{ model.notes }}
         </div>
       </div>
     </div>
@@ -87,10 +93,19 @@
 export default {
   name: 'ConspiracyModalPerson',
   props: {
+    editMode: {
+      type: Boolean,
+      required: true,
+    },
     personData: {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      model: this.personData.content,
+    };
   },
   computed: {
     imgUrl() {
@@ -100,12 +115,6 @@ export default {
         src = images(`./${src}`);
       }
       return src;
-    },
-  },
-  methods: {
-    getImgUrl(pet) {
-      const images = require.context('../assets/', false, /\.jpg$/);
-      return images(`./${pet}.jpg`);
     },
   },
 };
@@ -149,6 +158,15 @@ export default {
       .line {
         padding: 12px;
         border-bottom: 2px solid #666;
+
+        &.edit-mode {
+          padding: 0;
+
+          input {
+            height: 43px;
+            width: 302px;
+          }
+        }
 
         &.last {
           border-bottom: none;
