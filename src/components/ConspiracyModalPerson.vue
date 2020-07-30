@@ -9,49 +9,91 @@
         <div class="line">
           Name:
         </div>
-        <div class="line text" :class="{ 'edit-mode': editMode }">
+        <div
+          class="line text"
+          :class="{ 'edit-mode': editMode }"
+        >
           <span v-if="!editMode">{{ model.name }}</span>
-          <input v-if="editMode" v-model="model.name" type="text" />
+          <input
+            v-if="editMode"
+            v-model="model.name"
+            type="text"
+          >
         </div>
 
         <div class="line">
           Aliases:
         </div>
-        <div class="line text" :class="{ 'edit-mode': editMode }">
+        <div
+          class="line text"
+          :class="{ 'edit-mode': editMode }"
+        >
           <span v-if="!editMode">{{ model.aliases }}</span>
-          <input v-if="editMode" v-model="model.aliases" type="text" />
+          <input
+            v-if="editMode"
+            v-model="model.aliases"
+            type="text"
+          >
         </div>
 
         <div class="line">
           Date of Birth:
         </div>
-        <div class="line text" :class="{ 'edit-mode': editMode }">
+        <div
+          class="line text"
+          :class="{ 'edit-mode': editMode }"
+        >
           <span v-if="!editMode">{{ model.dob }}</span>
-          <input v-if="editMode" v-model="model.dob" type="text" />
+          <input
+            v-if="editMode"
+            v-model="model.dob"
+            type="text"
+          >
         </div>
 
         <div class="line">
           Place of Birth:
         </div>
-        <div class="line text" :class="{ 'edit-mode': editMode }">
+        <div
+          class="line text"
+          :class="{ 'edit-mode': editMode }"
+        >
           <span v-if="!editMode">{{ model.birthplace }}</span>
-          <input v-if="editMode" v-model="model.birthplace" type="text" />
+          <input
+            v-if="editMode"
+            v-model="model.birthplace"
+            type="text"
+          >
         </div>
 
         <div class="line">
           Occupation:
         </div>
-        <div class="line text" :class="{ 'edit-mode': editMode }">
+        <div
+          class="line text"
+          :class="{ 'edit-mode': editMode }"
+        >
           <span v-if="!editMode">{{ model.occupation }}</span>
-          <input v-if="editMode" v-model="model.occupation" type="text" />
+          <input
+            v-if="editMode"
+            v-model="model.occupation"
+            type="text"
+          >
         </div>
 
         <div class="line last">
           Status:
         </div>
-        <div class="line text last" :class="{ 'edit-mode': editMode }">
+        <div
+          class="line text last"
+          :class="{ 'edit-mode': editMode }"
+        >
           <span v-if="!editMode">{{ model.status }}</span>
-          <input v-if="editMode" v-model="model.status" type="text" />
+          <input
+            v-if="editMode"
+            v-model="model.status"
+            type="text"
+          >
         </div>
       </div>
       <div class="image-container">

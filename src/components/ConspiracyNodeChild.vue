@@ -7,7 +7,7 @@
     <div
       v-if="isLinking"
       class="link"
-    ></div>
+    />
     <div
       class="pin"
       @mouseover="showControls = true"

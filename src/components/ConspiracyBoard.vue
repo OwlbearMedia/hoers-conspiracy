@@ -6,13 +6,13 @@
     <conspiracy-node
       v-for="(node, index) in filteredNodes"
       :id="node._id"
-      :socket="socket"
       :key="`node-${index}`"
+      :socket="socket"
     />
     <conspiracy-node-link
       v-for="(link, index) in links"
-      :key="`link-${index}`"
       :id="link._id"
+      :key="`link-${index}`"
       :point-a="link.pointA"
       :point-b="link.pointB"
     />
@@ -52,9 +52,6 @@ export default {
       socket: io('/'),
     };
   },
-  created() {
-    this.handleMovedNode();
-  },
   computed: {
     nodes() {
       return this.board.nodes || [];
@@ -65,6 +62,9 @@ export default {
     links() {
       return this.board.links || [];
     },
+  },
+  created() {
+    this.handleMovedNode();
   },
   methods: {
     handleMovedNode() {

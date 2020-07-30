@@ -1,6 +1,13 @@
 <template>
-  <div :style="stylePostion" class="node-container">
-    <div v-if="isLinking && type !== 'map'" class="link" :class="cssClass"></div>
+  <div
+    :style="stylePostion"
+    class="node-container"
+  >
+    <div
+      v-if="isLinking && type !== 'map'"
+      class="link"
+      :class="cssClass"
+    />
     <div
       class="node"
       :class="cssClass"
