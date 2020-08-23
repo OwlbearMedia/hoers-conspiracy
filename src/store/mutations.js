@@ -48,6 +48,9 @@ const mutations = {
     state.board.links.splice(index, 1);
     state.isAntiLinking = false;
   },
+  addNote(state, payload) {
+    state.board.nodes.push(payload);
+  },
 };
 
 export { mutations as default };
